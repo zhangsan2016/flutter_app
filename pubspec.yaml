@@ -35,6 +35,7 @@ dependencies:
   # amap_base: ^0.3.5
 
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -54,6 +55,7 @@ flutter:
   assets:
     - images/load.png
     - images/load2.png
+    - images/Banner.png
 
 
   # To add assets to your application, add an assets section, like this:

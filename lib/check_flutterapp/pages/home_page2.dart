@@ -32,7 +32,8 @@ class _HomePage2State extends State<HomePage2> {
           return Column(
             children: <Widget>[
               SwiperDiy(),
-              TopNavigator(navigatorList: gavgatorList)
+              TopNavigator(navigatorList: gavgatorList),
+              AdBanner()
             ],
           );
           /*   if(snapshot.hasData){
@@ -99,7 +100,7 @@ class TopNavigator extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Image.asset('images/load2.png', width: ScreenUtil().setWidth(95)),
-         /* Image.network(
+          /* Image.network(
               'http://img2.imgtn.bdimg.com/it/u=3342460388,4287062980&fm=26&gp=0.jpg',
               width: ScreenUtil().setWidth(95)),*/
           Text('type')
@@ -120,6 +121,19 @@ class TopNavigator extends StatelessWidget {
           return _gridViewItemUI(context, item);
         }).toList(),
       ),
+    );
+  }
+}
+
+class AdBanner extends StatelessWidget {
+  final String adPicture;
+
+  AdBanner({Key key, this.adPicture}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+       child:Image.asset('images/Banner.png')
     );
   }
 }
