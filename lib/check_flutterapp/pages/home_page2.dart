@@ -29,13 +29,13 @@ class _HomePage2State extends State<HomePage2> {
             gavgatorList.add(companys);
           }
 
-          return Column(
+          return SingleChildScrollView(child: Column(
             children: <Widget>[
               SwiperDiy(),
               TopNavigator(navigatorList: gavgatorList),
               AdBanner()
             ],
-          );
+          ),);  // 添加 SingleChildScrollView 防止越界
           /*   if(snapshot.hasData){
             return Column(
               children: <Widget>[
@@ -79,7 +79,7 @@ class SwiperDiy extends StatelessWidget {
           itemCount: swiperDateList.length,
           pagination: SwiperPagination(), // 导航器（...）
           autoplay: true // 自动播放
-          ),
+      ),
     );
   }
 }
@@ -133,7 +133,7 @@ class AdBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-       child:Image.asset('images/Banner.png')
+        child: Image.asset('images/Banner.png')
     );
   }
 }

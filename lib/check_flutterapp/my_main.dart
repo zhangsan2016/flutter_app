@@ -1,4 +1,5 @@
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/check_flutterapp/pages/Index_page.dart';
 
