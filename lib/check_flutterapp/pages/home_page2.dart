@@ -163,7 +163,7 @@ class Recommend extends StatelessWidget {
           color: Colors.white,
           border: Border(
               bottom: BorderSide(
-                  width: 0.5, color: Color.fromARGB(0, 0, 255, 255)))),
+                  width: 0.5, color: Colors.black12))),
       child: Text(
         '商品推荐',
         style: TextStyle(color: Colors.pink),
