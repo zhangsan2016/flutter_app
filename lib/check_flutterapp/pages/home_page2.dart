@@ -11,8 +11,12 @@ class HomePage2 extends StatefulWidget {
   _HomePage2State createState() => _HomePage2State();
 }
 
-class _HomePage2State extends State<HomePage2> {
+class _HomePage2State extends State<HomePage2> with AutomaticKeepAliveClientMixin {
   String homePageContent = '正在获取数据';
+
+  // 让新界面重新点击不刷新
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +59,7 @@ class _HomePage2State extends State<HomePage2> {
       ),
     );
   }
+
 }
 
 /**
