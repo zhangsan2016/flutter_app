@@ -11,7 +11,8 @@ class HomePage2 extends StatefulWidget {
   _HomePage2State createState() => _HomePage2State();
 }
 
-class _HomePage2State extends State<HomePage2> with AutomaticKeepAliveClientMixin {
+class _HomePage2State extends State<HomePage2>
+    with AutomaticKeepAliveClientMixin {
   String homePageContent = '正在获取数据';
 
   // 让新界面重新点击不刷新
@@ -40,7 +41,9 @@ class _HomePage2State extends State<HomePage2> with AutomaticKeepAliveClientMixi
                 SwiperDiy(),
                 TopNavigator(navigatorList: gavgatorList),
                 AdBanner(),
-                Recommend()
+                Recommend(),
+                FloorTitle(),
+                FloorContent(),
               ],
             ),
           ); // 添加 SingleChildScrollView 防止越界
@@ -88,7 +91,7 @@ class SwiperDiy extends StatelessWidget {
           itemCount: swiperDateList.length,
           pagination: SwiperPagination(), // 导航器（...）
           autoplay: true // 自动播放
-          ),
+      ),
     );
   }
 }
@@ -181,19 +184,20 @@ class Recommend extends StatelessWidget {
     return InkWell(
       onTap: () {},
       child: Container(
-          height: ScreenUtil().setHeight(330),
-          width: ScreenUtil().setWidth(250),
-          padding: EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                  left: BorderSide(
-                      width: 0.2, color: Colors.grey))),
-        child:Column(
+        height: ScreenUtil().setHeight(330),
+        width: ScreenUtil().setWidth(250),
+        padding: EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+                left: BorderSide(
+                    width: 0.2, color: Colors.grey))),
+        child: Column(
           children: <Widget>[
             Image.asset('images/shangping.png'),
             Text('￥${269}'),
-            Text('￥${385}',style: TextStyle(decoration: TextDecoration.lineThrough,color:Colors.grey),)
+            Text('￥${385}', style: TextStyle(
+                decoration: TextDecoration.lineThrough, color: Colors.grey),)
           ],
         ),
       ),
@@ -228,3 +232,123 @@ class Recommend extends StatelessWidget {
     );
   }
 }
+
+
+/**
+ *  楼层标题
+ */
+class FloorTitle extends StatelessWidget {
+  String picture_address;
+
+  FloorTitle({Key key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      child: Image.asset('images/hengfu.png'),
+    );
+  }
+
+}
+
+/**
+ *  商品广告列表
+ */
+class FloorContent extends StatelessWidget {
+
+  List floorGoodsList = [
+    'http://forum.xitek.com/pics/202003/98672/9867214/thumb_9867214_1585272562.jpg',
+    'http://forum.xitek.com/pics/202003/2876/287616/thumb_287616_1585233278.jpg',
+    'http://forum.xitek.com/pics/202003/2225/222584/thumb_222584_1585232569.jpg'
+        'http://forum.xitek.com/pics/202003/2225/222584/thumb_222584_1585232569.jpg'
+        'http://forum.xitek.com/pics/202003/2225/222584/thumb_222584_1585232569.jpg'
+        'http://forum.xitek.com/pics/202003/2225/222584/thumb_222584_1585232569.jpg'
+        'http://forum.xitek.com/pics/202003/2225/222584/thumb_222584_1585232569.jpg'
+  ];
+
+  FloorContent({Key key, this.floorGoodsList});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child:Column(
+        children: <Widget>[
+          _firstRow(),
+          _otherGoods(),
+        ],
+      ),
+    );
+  }
+
+  Widget _firstRow() {
+    return Row(
+      children: <Widget>[
+        _goodsItem(null),
+        Column(
+          children: <Widget>[
+            _goodsItem(null),
+            _goodsItem(null),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _otherGoods(){
+    return Row(
+      children: <Widget>[
+        _goodsItem(null),
+        _goodsItem(null),
+      ],
+    );
+  }
+
+
+  Widget _goodsItem(Map goods) {
+    return Container(
+      width: ScreenUtil().setWidth(375),
+      child: InkWell(
+        onTap: () {
+          print('点击了楼层商品');
+        },
+        child: Image.asset('images/shangping2.png'),
+      ),
+    );
+  }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

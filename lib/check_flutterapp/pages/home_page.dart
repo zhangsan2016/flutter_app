@@ -66,7 +66,7 @@ Future getHttp() async {
   try {
     Response response;
     response = await Dio().post('http://121.40.194.91:8080/ldsight/deviceAction');
-    print("xxx Response =" + response.toString());
+   // print("xxx Response =" + response.toString());
     return response.data;
   } catch (e) {
     return print(e);
