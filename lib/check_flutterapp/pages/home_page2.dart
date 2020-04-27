@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:html';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +17,17 @@ class HomePage2 extends StatefulWidget {
 class _HomePage2State extends State<HomePage2>
     with AutomaticKeepAliveClientMixin {
   String homePageContent = '正在获取数据';
+
+  int page = 1;
+  List<Map> hotGoodsList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // 网络获取火爆专区商品列表
+    _getHotGoods();
+
+  }
 
   // 让新界面重新点击不刷新
   @override
@@ -44,6 +58,8 @@ class _HomePage2State extends State<HomePage2>
                 Recommend(),
                 FloorTitle(),
                 FloorContent(),
+                _hotGoods(), // 火爆商品
+
               ],
             ),
           ); // 添加 SingleChildScrollView 防止越界
@@ -63,6 +79,90 @@ class _HomePage2State extends State<HomePage2>
     );
   }
 
+  // 通过网络获取火爆商品列表
+  void _getHotGoods() {
+    var formData = {'page': page};
+    request('homePageBelowConten', FormData: formData).then((val) {
+      var data = json.decode(val.toString());
+      List<Map> newGoodsList = (data['dat'] as List).cast();
+      setState(() {
+        hotGoodsList.addAll(newGoodsList);
+        page++;
+      });
+    });
+  }
+
+  // 设置标题
+  Widget hotTitle = Container(
+    margin: EdgeInsets.only(top: 10.0),
+    padding: EdgeInsets.all(5.0),
+    alignment: Alignment.center,
+    color: Colors.transparent,
+    child: Text('火爆专区'),
+  );
+
+  Widget _wrapList() {
+    if (hotGoodsList.length != 0) {
+      List<Widget> listWidget = hotGoodsList.map((val) {
+        return InkWell(
+          onTap: () {},
+          child: Container(
+            width: ScreenUtil().setWidth(372),
+            color: Colors.white,
+            padding: EdgeInsets.all(5.0),
+            margin: EdgeInsets.only(bottom: 3.0),
+            child: Column(
+              children: <Widget>[
+                Image.network(
+                  val['image'],
+                  width: ScreenUtil().setWidth(370),
+                ),
+                Text(
+                  val['name'],
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: Colors.pink, fontSize: ScreenUtil().setSp(26)),
+                ),
+                Row(
+                  children: <Widget>[
+                    Text('￥${val['mallPrice']}'),
+                    Text(
+                      '￥${val['price']}',
+                      style: TextStyle(
+                          color: Colors.black26,
+                          decoration: TextDecoration
+                              .lineThrough), // 添加 lineThrough 划线效果
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      }).toList();
+
+      // 返回流式布局
+      return Wrap(
+        spacing: 2,
+        children: listWidget,
+      );
+    } else {
+      return Text('');
+    }
+  }
+
+  // 火爆专区组合布局
+  Widget _hotGoods(){
+   return Container(
+     child: Column(
+       children: <Widget>[
+         hotTitle,
+         _wrapList(),
+       ],
+     ),
+   );
+  }
 }
 
 /**
@@ -91,7 +191,7 @@ class SwiperDiy extends StatelessWidget {
           itemCount: swiperDateList.length,
           pagination: SwiperPagination(), // 导航器（...）
           autoplay: true // 自动播放
-      ),
+          ),
     );
   }
 }
@@ -169,9 +269,8 @@ class Recommend extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(10.0, 2.0, 0, 2.0),
       decoration: BoxDecoration(
           color: Colors.white,
-          border: Border(
-              bottom: BorderSide(
-                  width: 0.5, color: Colors.black12))),
+          border:
+              Border(bottom: BorderSide(width: 0.5, color: Colors.black12))),
       child: Text(
         '商品推荐',
         style: TextStyle(color: Colors.pink),
@@ -189,15 +288,16 @@ class Recommend extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         decoration: BoxDecoration(
             color: Colors.white,
-            border: Border(
-                left: BorderSide(
-                    width: 0.2, color: Colors.grey))),
+            border: Border(left: BorderSide(width: 0.2, color: Colors.grey))),
         child: Column(
           children: <Widget>[
             Image.asset('images/shangping.png'),
             Text('￥${269}'),
-            Text('￥${385}', style: TextStyle(
-                decoration: TextDecoration.lineThrough, color: Colors.grey),)
+            Text(
+              '￥${385}',
+              style: TextStyle(
+                  decoration: TextDecoration.lineThrough, color: Colors.grey),
+            )
           ],
         ),
       ),
@@ -233,7 +333,6 @@ class Recommend extends StatelessWidget {
   }
 }
 
-
 /**
  *  楼层标题
  */
@@ -249,14 +348,12 @@ class FloorTitle extends StatelessWidget {
       child: Image.asset('images/hengfu.png'),
     );
   }
-
 }
 
 /**
  *  商品广告列表
  */
 class FloorContent extends StatelessWidget {
-
   List floorGoodsList = [
     'http://forum.xitek.com/pics/202003/98672/9867214/thumb_9867214_1585272562.jpg',
     'http://forum.xitek.com/pics/202003/2876/287616/thumb_287616_1585233278.jpg',
@@ -272,7 +369,7 @@ class FloorContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child:Column(
+      child: Column(
         children: <Widget>[
           _firstRow(),
           _otherGoods(),
@@ -295,7 +392,7 @@ class FloorContent extends StatelessWidget {
     );
   }
 
-  Widget _otherGoods(){
+  Widget _otherGoods() {
     return Row(
       children: <Widget>[
         _goodsItem(null),
@@ -303,7 +400,6 @@ class FloorContent extends StatelessWidget {
       ],
     );
   }
-
 
   Widget _goodsItem(Map goods) {
     return Container(
@@ -316,39 +412,4 @@ class FloorContent extends StatelessWidget {
       ),
     );
   }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
