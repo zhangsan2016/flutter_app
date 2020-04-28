@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -82,7 +81,7 @@ class _HomePage2State extends State<HomePage2>
   // 通过网络获取火爆商品列表
   void _getHotGoods() {
     var formData = {'page': page};
-    request('homePageBelowConten', FormData: formData).then((val) {
+    request('homePageBelowConten', formData: formData).then((val) {
       var data = json.decode(val.toString());
       List<Map> newGoodsList = (data['dat'] as List).cast();
       setState(() {

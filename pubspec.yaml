@@ -35,6 +35,8 @@ dependencies:
   # amap_base: ^0.3.5
   # JSON序列化模板
   json_annotation: ^2.0.0
+  # 下拉刷新
+  flutter_easyrefresh: ^2.1.1
 
 
 

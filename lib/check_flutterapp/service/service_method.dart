@@ -5,7 +5,7 @@ import 'package:flutterapp/check_flutterapp/config/service_url.dart';
 
 
 // 通用网络获取数据方法
-Future request(url, {FormData}) async {
+Future request(url, {formData}) async {
  /* try {
     print('开始获取数据......');
     Response response;
@@ -14,7 +14,7 @@ Future request(url, {FormData}) async {
     if (FormData == null) {
       response = await dio.post(servicePath[url]);
     } else {
-      response = await dio.post(servicePath[url]);
+      response = await dio.post(servicePath[url], data: formData);
     }
 
     if (response.statusCode == 200) {
