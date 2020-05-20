@@ -4,18 +4,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterapp/check_flutterapp/service/service_method.dart';
 
 class HomePage2 extends StatefulWidget {
   @override
-  _HomePage2State createState() => _HomePage2State();
+  createState() => _HomePage2State();
 }
 
 class _HomePage2State extends State<HomePage2>
     with AutomaticKeepAliveClientMixin {
   String homePageContent = '正在获取数据';
+  GlobalKey<RefreshFooterState> _footerkey = new GlobalKey<RefreshFooterState>();
 
   int page = 1;
   List<Map> hotGoodsList = [];
@@ -25,7 +27,6 @@ class _HomePage2State extends State<HomePage2>
     super.initState();
     // 网络获取火爆专区商品列表
     _getHotGoods();
-
   }
 
   // 让新界面重新点击不刷新
@@ -48,8 +49,18 @@ class _HomePage2State extends State<HomePage2>
             gavgatorList.add(companys);
           }
 
-          return SingleChildScrollView(
-            child: Column(
+          return EasyRefresh(
+            refreshFooter: ClassicsFooter(
+              bgColor: Colors.white,
+              key: _footerkey,
+              textColor: Colors.pink,
+              moreInfoColor: Colors.pink,
+              showMore: true,
+              noMoreText: '',
+              moreInfo: '加载中',
+              loadReadyText: '上拉加载',
+            ),
+            child: ListView(
               children: <Widget>[
                 SwiperDiy(),
                 TopNavigator(navigatorList: gavgatorList),
@@ -58,11 +69,27 @@ class _HomePage2State extends State<HomePage2>
                 FloorTitle(),
                 FloorContent(),
                 _hotGoods(), // 火爆商品
-
               ],
             ),
+            onRefresh: () async {
+              print('onRefresh');
+            },
+            loadMore: () async {
+              var formData = {'page': page};
+              /*  await request('homePageBelowConten', formData: formData)
+                  .then((val) {
+                var data = json.decode(val.toString());
+                List<Map> newGoodsList = (data['dat'] as List).cast();
+                setState(() {
+                  hotGoodsList.addAll(newGoodsList);
+                  page++;
+                });
+              });*/
+            },
           ); // 添加 SingleChildScrollView 防止越界
-          /*   if(snapshot.hasData){
+
+          /*
+           if(snapshot.hasData){
             return Column(
               children: <Widget>[
                 SwiperDiy()
@@ -152,15 +179,15 @@ class _HomePage2State extends State<HomePage2>
   }
 
   // 火爆专区组合布局
-  Widget _hotGoods(){
-   return Container(
-     child: Column(
-       children: <Widget>[
-         hotTitle,
-         _wrapList(),
-       ],
-     ),
-   );
+  Widget _hotGoods() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          hotTitle,
+          _wrapList(),
+        ],
+      ),
+    );
   }
 }
 
@@ -226,6 +253,7 @@ class TopNavigator extends StatelessWidget {
       height: ScreenUtil().setHeight(320),
       padding: EdgeInsets.all(3.0),
       child: GridView.count(
+        physics: NeverScrollableScrollPhysics(), // 取消 GridView 的下拉回弹
         crossAxisCount: 5,
         padding: EdgeInsets.all(5.0),
         children: navigatorList.map((item) {
