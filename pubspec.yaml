@@ -38,7 +38,10 @@ dependencies:
   # 下拉刷新
   #  flutter_easyrefresh: ^2.1.1
   flutter_easyrefresh: ^1.2.7
-
+  # 可拖动进度条
+  flutter_seekbar:
+    git: https://github.com/LiuC520/flutter_seekbar.git
+  boxed_vertical_seekbar: ^1.0.0
 
 
 dev_dependencies:
