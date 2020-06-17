@@ -14,8 +14,6 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,16 +57,12 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
 
   @override
   Future<void> initState() {
-    print('initState xxxxxxxxxxxxxxxxxxxxxxx');
     _getCategory();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('build xxxxxxxxxxxxxxxxxxxxxxx');
-   // print('Provider.of<ChildCategory>(context) xxxxxxxxxxxxxxx ${Provider.of<ChildCategory>(context).childCategoryList?.length}');
-  //  print('Provider.of<ChildCategory>(context) xxxxxxxxxxxxxxx ${Provider.of<ChildCategory>(context).childCategoryList[0].mallCategoryId}');
     return  Container(
           width: ScreenUtil().setWidth(180),
           decoration: BoxDecoration(border: Border(right: BorderSide(width: 1, color: Colors.black12))),
@@ -95,11 +89,11 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       // list = category.data;
       List<CategoryModel> categoryModels = List<CategoryModel>();
       for (int i = 0; i < 15; i++) {
-        CategoryModel categoryModel = CategoryModel(mallCategoryId: '类型$i');
+        CategoryModel categoryModel = CategoryModel(mallCategoryId: '类型 $i');
         categoryModel.bxMallSubDto = new List<BxMallSubDto>();
         for (int b = 0; b < 8; b++) {
           BxMallSubDto bxMallSubDto = new BxMallSubDto();
-          bxMallSubDto.mallSubName = '${categoryModel.mallCategoryId} $b';
+          bxMallSubDto.mallSubName = '${categoryModel.mallCategoryId}$b';
           categoryModel.bxMallSubDto.add(bxMallSubDto);
         }
 
@@ -152,6 +146,7 @@ class RightCategoryNav extends StatefulWidget {
 class _RightCategoryNavState extends State<RightCategoryNav> {
   @override
   Widget build(BuildContext context) {
+    int selected = Provider.of<ChildCategory>(context).selected;
     return Container(
       height: ScreenUtil().setHeight(80),
       width: ScreenUtil().setWidth(570),
@@ -163,24 +158,22 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
       ),
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount:
-              Provider.of<ChildCategory>(context).childCategoryList.length,
+          itemCount: Provider.of<ChildCategory>(context).childCategoryList[selected].bxMallSubDto.length,
           itemBuilder: (context, index) {
-            return _rightInkWell(Provider.of<ChildCategory>(context)
-                .childCategoryList[index]
-                .bxMallSubDto[index]);
+            return _rightInkWell(Provider.of<ChildCategory>(context).childCategoryList[selected].bxMallSubDto[index]);
           }),
     );
   }
 
   Widget _rightInkWell(BxMallSubDto item) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+         print('_rightInkWell  ${item.mallSubName}');
+      },
       child: Container(
         padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
         child: Text(
-          // item.mallSubName,
-          '66',
+           item.mallSubName,
           style: TextStyle(fontSize: ScreenUtil().setSp(28)),
         ),
       ),
