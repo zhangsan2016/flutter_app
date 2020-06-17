@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-import 'CustomScrollViewTestRoute.dart';
+import 'package:flutter/material.dart';
 import 'SwitchAndCheckBoxTestRoute.dart';
-import 'TipRoute.dart';
 import 'aa.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

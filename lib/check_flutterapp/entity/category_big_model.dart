@@ -34,6 +34,7 @@ class CategoryModel {
   Null comments;
   String image;
 
+
   CategoryModel(
       {this.mallCategoryId,
         this.mallCategoryName,
@@ -73,8 +74,7 @@ class BxMallSubDto {
   String mallSubName;
   String comments;
 
-  BxMallSubDto(
-      {this.mallSubId, this.mallCategoryId, this.mallSubName, this.comments});
+  BxMallSubDto({this.mallSubId, this.mallCategoryId, this.mallSubName, this.comments});
 
   BxMallSubDto.fromJson(Map<String, dynamic> json) {
     mallSubId = json['mallSubId'];

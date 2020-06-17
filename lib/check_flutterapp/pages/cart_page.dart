@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    getHttp();
+    print('CartPage');
+    // getHttp();
     return Scaffold(
       body: Center(child: Text('购物车界面'),),
     );
