@@ -57,7 +57,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
 
   @override
   Future<void> initState() {
-    _getCategory();
+  //  _getCategory();
     super.initState();
   }
 
@@ -66,10 +66,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
     return  Container(
           width: ScreenUtil().setWidth(180),
           decoration: BoxDecoration(border: Border(right: BorderSide(width: 1, color: Colors.black12))),
-          child:
-        //  Container(),
-
-          Consumer<ChildCategory>(
+          child: Consumer<ChildCategory>(
               builder: (context, counter, _) {
                 return ListView.builder(
                     itemCount: Provider.of<ChildCategory>(context).childCategoryList?.length,

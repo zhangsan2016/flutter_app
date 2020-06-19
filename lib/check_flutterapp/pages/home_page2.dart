@@ -104,7 +104,6 @@ class _HomePage2State extends State<HomePage2>
       ),
     );
   }
-
   // 通过网络获取火爆商品列表
   void _getHotGoods() {
     var formData = {'page': page};
