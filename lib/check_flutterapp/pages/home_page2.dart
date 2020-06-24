@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -26,7 +25,7 @@ class _HomePage2State extends State<HomePage2>
   void initState() {
     super.initState();
     // 网络获取火爆专区商品列表
-    _getHotGoods();
+   // _getHotGoods();
   }
 
   // 让新界面重新点击不刷新

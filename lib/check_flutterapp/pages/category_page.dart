@@ -14,32 +14,28 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('商品分类'),
-        ),
-        body: Provider(
-          create: (_) => new ChildCategory(),
-          child: Container(
-            child: Row(
-              children: <Widget>[
-
-                // 左侧导航
-               LeftCatgegoryNav(),
-                // 右侧导航
+      appBar: AppBar(
+        title: Text('商品分类'),
+      ),
+      body: Container(
+        child: Row(
+          children: <Widget>[
+            // 左侧导航
+            LeftCatgegoryNav(),
+            // 右侧导航
             Column(
               children: <Widget>[
                 RightCategoryNav(),
               ],
             ),
-              ],
-            ),
-          ),
+          ],
         ),
-      );
-
+      ),
+    );
   }
 }
 
@@ -47,7 +43,6 @@ class LeftCatgegoryNav extends StatefulWidget {
   @override
   _LeftCatgegoryNavState createState() => _LeftCatgegoryNavState();
 }
-
 
 /**
  * 左侧大类导航
@@ -57,33 +52,34 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
 
   @override
   Future<void> initState() {
-  //  _getCategory();
     super.initState();
+    _getCategory();
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
-          width: ScreenUtil().setWidth(180),
-          decoration: BoxDecoration(border: Border(right: BorderSide(width: 1, color: Colors.black12))),
-          child: Consumer<ChildCategory>(
-              builder: (context, counter, _) {
-                return ListView.builder(
-                    itemCount: Provider.of<ChildCategory>(context).childCategoryList?.length,
-                    itemBuilder: (context, index) {
-                      return _leftInkWell(Provider.of<ChildCategory>(context).childCategoryList[index].mallCategoryId, context);
-                    });
-              }
-          ),
+    print('左侧大类导航 获取数据 ${ Provider.of<ChildCategory>(context).childCategoryList.length}');
+    final childCategory = Provider.of<ChildCategory>(context);
+    return Container(
+      width: ScreenUtil().setWidth(180),
+      decoration: BoxDecoration(
+          border: Border(right: BorderSide(width: 1, color: Colors.black12))),
+      child: ListView.builder(
+          itemCount: childCategory.childCategoryList.length != 0 ? childCategory.childCategoryList.length : 0,
+          itemBuilder: (context, index) {
+            return _leftInkWell(
+                Provider.of<ChildCategory>(context)
+                    .childCategoryList[index]
+                    .mallCategoryId,
+                context);
+          }),
     );
   }
 
-  void _getCategory()  {
-    request('getCategory').then((val) {
+  void _getCategory() {
+   request('getCategory').then((val) {
       var data = json.decode(val.toString());
       // CategoryBigModel category = CategoryBigModel.fromJson(data);
-
-      // list = category.data;
       List<CategoryModel> categoryModels = List<CategoryModel>();
       for (int i = 0; i < 15; i++) {
         CategoryModel categoryModel = CategoryModel(mallCategoryId: '类型 $i');
@@ -97,12 +93,14 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
         categoryModels.add(categoryModel);
       }
       setState(() {
-
         list = categoryModels;
-        Provider.of<ChildCategory>(context, listen: false) .getchildCategory(list);
-
+        Provider.of<ChildCategory>(context, listen: false)
+            .getchildCategory(list);
       });
     });
+
+    // list = category.data;
+
   }
 
   /**
@@ -111,6 +109,9 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
   Widget _leftInkWell(String type, BuildContext context) {
     return InkWell(
       onTap: () {
+        // Provider.of<ChildCategory>(context).getchildCategory(list);
+        Provider.of<ChildCategory>(context, listen: false)
+            .getchildCategory(list);
         // Provider.of<ChildCategory>(context).getchildCategory(list);
       },
       child: Container(
@@ -128,8 +129,6 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       ),
     );
   }
-
-
 }
 
 /**
@@ -141,9 +140,13 @@ class RightCategoryNav extends StatefulWidget {
 }
 
 class _RightCategoryNavState extends State<RightCategoryNav> {
+
   @override
   Widget build(BuildContext context) {
+    print('RightCategoryNav 执行 获取数据 ${ Provider.of<ChildCategory>(context).childCategoryList.length}');
+
     int selected = Provider.of<ChildCategory>(context).selected;
+    final childCategory = Provider.of<ChildCategory>(context);
     return Container(
       height: ScreenUtil().setHeight(80),
       width: ScreenUtil().setWidth(570),
@@ -155,9 +158,13 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
       ),
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: Provider.of<ChildCategory>(context).childCategoryList[selected].bxMallSubDto.length,
+          itemCount: childCategory.childCategoryList.length != 0
+              ? childCategory.childCategoryList[selected].bxMallSubDto.length
+              : 0,
           itemBuilder: (context, index) {
-            return _rightInkWell(Provider.of<ChildCategory>(context).childCategoryList[selected].bxMallSubDto[index]);
+            return _rightInkWell(Provider.of<ChildCategory>(context)
+                .childCategoryList[selected]
+                .bxMallSubDto[index]);
           }),
     );
   }
@@ -165,12 +172,12 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
   Widget _rightInkWell(BxMallSubDto item) {
     return InkWell(
       onTap: () {
-         print('_rightInkWell  ${item.mallSubName}');
+        print('_rightInkWell  ${item.mallSubName}');
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
         child: Text(
-           item.mallSubName,
+          item.mallSubName,
           style: TextStyle(fontSize: ScreenUtil().setSp(28)),
         ),
       ),

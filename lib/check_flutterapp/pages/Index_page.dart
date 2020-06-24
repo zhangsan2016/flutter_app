@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutterapp/check_flutterapp/provide/child_category.dart';
+import 'package:provider/provider.dart';
 
 import 'cart_page.dart';
 import 'category_page.dart';
