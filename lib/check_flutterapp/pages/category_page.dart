@@ -59,7 +59,6 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
 
   @override
   Widget build(BuildContext context) {
-    print('左侧大类导航 获取数据 ${ Provider.of<ChildCategory>(context).childCategoryList.length}');
     final childCategory = Provider.of<ChildCategory>(context);
     return Container(
       width: ScreenUtil().setWidth(180),
@@ -112,8 +111,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
   Widget _leftInkWell(String type, BuildContext context, int index) {
     return InkWell(
       onTap: () {
-     //   Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
-     //   Provider.of<ChildCategory>(context, listen: false).setSelected(s)
+        print('_leftInkWell $type');
         Provider.of<ChildCategory>(context, listen: false).setSelected(index);
       },
       child: Container(
@@ -145,7 +143,6 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
 
   @override
   Widget build(BuildContext context) {
-    print('RightCategoryNav 执行 获取数据 ${ Provider.of<ChildCategory>(context).childCategoryList.length}');
 
     int selected = Provider.of<ChildCategory>(context).selected;
     final childCategory = Provider.of<ChildCategory>(context);
