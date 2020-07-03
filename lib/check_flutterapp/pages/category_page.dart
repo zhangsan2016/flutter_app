@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +72,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
                 Provider.of<ChildCategory>(context)
                     .childCategoryList[index]
                     .mallCategoryId,
-                context);
+                context,index);
           }),
     );
   }
@@ -84,7 +85,10 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       for (int i = 0; i < 15; i++) {
         CategoryModel categoryModel = CategoryModel(mallCategoryId: '类型 $i');
         categoryModel.bxMallSubDto = new List<BxMallSubDto>();
-        for (int b = 0; b < 8; b++) {
+
+        // 右边菜单随机长度
+        int leng =3 + Random().nextInt(10);
+        for (int b = 0; b < leng; b++) {
           BxMallSubDto bxMallSubDto = new BxMallSubDto();
           bxMallSubDto.mallSubName = '${categoryModel.mallCategoryId}$b';
           categoryModel.bxMallSubDto.add(bxMallSubDto);
@@ -94,8 +98,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       }
       setState(() {
         list = categoryModels;
-        Provider.of<ChildCategory>(context, listen: false)
-            .getchildCategory(list);
+        Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
       });
     });
 
@@ -106,13 +109,12 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
   /**
    * 根据 index 获取 json中的单个类别
    */
-  Widget _leftInkWell(String type, BuildContext context) {
+  Widget _leftInkWell(String type, BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        // Provider.of<ChildCategory>(context).getchildCategory(list);
-        Provider.of<ChildCategory>(context, listen: false)
-            .getchildCategory(list);
-        // Provider.of<ChildCategory>(context).getchildCategory(list);
+     //   Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
+     //   Provider.of<ChildCategory>(context, listen: false).setSelected(s)
+        Provider.of<ChildCategory>(context, listen: false).setSelected(index);
       },
       child: Container(
         height: ScreenUtil().setHeight(100),
@@ -162,9 +164,7 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
               ? childCategory.childCategoryList[selected].bxMallSubDto.length
               : 0,
           itemBuilder: (context, index) {
-            return _rightInkWell(Provider.of<ChildCategory>(context)
-                .childCategoryList[selected]
-                .bxMallSubDto[index]);
+            return _rightInkWell(Provider.of<ChildCategory>(context).childCategoryList[selected].bxMallSubDto[index]);
           }),
     );
   }

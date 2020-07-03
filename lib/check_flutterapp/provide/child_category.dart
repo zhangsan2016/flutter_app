@@ -8,7 +8,6 @@ class ChildCategory with   ChangeNotifier {
 
   void getchildCategory( List<CategoryModel> list) {
 
-    print('xxxxxxxxxxxxxxxxxxxxxxxxxx getchildCategory');
     childCategoryList = list;
     notifyListeners();
 

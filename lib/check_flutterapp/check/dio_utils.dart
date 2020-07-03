@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 
 /*
@@ -186,7 +188,13 @@ void main() {
   List<String> childCategoryList = [];
 
 
-  print('object ${childCategoryList.length} ');
+//  print('object ${childCategoryList.length} ');
+
+
+  for(int i = 0; i <= 10; i++){
+    print('${  Random().nextInt(10)}');
+  }
+
 
 
 }
