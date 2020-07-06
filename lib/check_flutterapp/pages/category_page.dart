@@ -8,6 +8,8 @@ import 'package:flutterapp/check_flutterapp/entity/category_big_model.dart';
 import 'package:flutterapp/check_flutterapp/entity/category_goods_list_model.dart';
 import 'package:flutterapp/check_flutterapp/provide/child_category.dart';
 import 'package:flutterapp/check_flutterapp/service/service_method.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -188,6 +190,11 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
     return InkWell(
       onTap: () {
         print('_rightInkWell  ${item.mallSubName}');
+
+        // 申请权限
+
+         _requestPermission();
+
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
@@ -197,6 +204,23 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
         ),
       ),
     );
+  }
+
+  /**
+   *  申请权限
+   */
+  Future _requestPermission() async {
+
+    // 申请权限
+    Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    // 申请结果
+    PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+    if (permission == PermissionStatus.granted) {
+      showToast('权限申请通过',position: ToastPosition.bottom);
+    } else {
+      showToast('权限申请被拒绝',position: ToastPosition.bottom);
+
+    }
   }
 }
 
