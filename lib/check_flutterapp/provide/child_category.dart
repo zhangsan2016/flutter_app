@@ -8,6 +8,7 @@ class ChildCategory with   ChangeNotifier {
 
   void getchildCategory( List<CategoryModel> list) {
 
+    // 通知状态更新
     childCategoryList = list;
     notifyListeners();
 

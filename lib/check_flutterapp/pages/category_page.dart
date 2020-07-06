@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutterapp/check_flutterapp/entity/category_big_model.dart';
+import 'package:flutterapp/check_flutterapp/entity/category_goods_list_model.dart';
 import 'package:flutterapp/check_flutterapp/provide/child_category.dart';
 import 'package:flutterapp/check_flutterapp/service/service_method.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,6 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +31,7 @@ class _CategoryPageState extends State<CategoryPage> {
             Column(
               children: <Widget>[
                 RightCategoryNav(),
+                CategoryGoodsList(),
               ],
             ),
           ],
@@ -65,19 +66,22 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       decoration: BoxDecoration(
           border: Border(right: BorderSide(width: 1, color: Colors.black12))),
       child: ListView.builder(
-          itemCount: childCategory.childCategoryList.length != 0 ? childCategory.childCategoryList.length : 0,
+          itemCount: childCategory.childCategoryList.length != 0
+              ? childCategory.childCategoryList.length
+              : 0,
           itemBuilder: (context, index) {
             return _leftInkWell(
                 Provider.of<ChildCategory>(context)
                     .childCategoryList[index]
                     .mallCategoryId,
-                context,index);
+                context,
+                index);
           }),
     );
   }
 
   void _getCategory() {
-   request('getCategory').then((val) {
+    request('getCategory').then((val) {
       var data = json.decode(val.toString());
       // CategoryBigModel category = CategoryBigModel.fromJson(data);
       List<CategoryModel> categoryModels = List<CategoryModel>();
@@ -85,8 +89,17 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
         CategoryModel categoryModel = CategoryModel(mallCategoryId: '类型 $i');
         categoryModel.bxMallSubDto = new List<BxMallSubDto>();
 
+
+        // 添加“全部”在最前
+        BxMallSubDto all = new BxMallSubDto();
+        all.mallSubId = "00";
+        all.mallCategoryId = "00";
+        all.comments = 'null';
+        all.mallSubName = '全部';
+        categoryModel.bxMallSubDto = [all];
+
         // 右边菜单随机长度
-        int leng =3 + Random().nextInt(10);
+        int leng = 3 + Random().nextInt(10);
         for (int b = 0; b < leng; b++) {
           BxMallSubDto bxMallSubDto = new BxMallSubDto();
           bxMallSubDto.mallSubName = '${categoryModel.mallCategoryId}$b';
@@ -97,18 +110,20 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       }
       setState(() {
         list = categoryModels;
-        Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
+        Provider.of<ChildCategory>(context, listen: false)
+            .getchildCategory(list);
       });
     });
 
     // list = category.data;
-
   }
 
   /**
    * 根据 index 获取 json中的单个类别
    */
   Widget _leftInkWell(String type, BuildContext context, int index) {
+    int selected = Provider.of<ChildCategory>(context).selected;
+    bool isClick = selected == index;
     return InkWell(
       onTap: () {
         print('_leftInkWell $type');
@@ -119,7 +134,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
         width: ScreenUtil().setWidth(20),
         padding: EdgeInsets.only(left: 10, top: 20),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: isClick ? Color.fromRGBO(236, 236, 236, 1) : Colors.white,
             border:
                 Border(bottom: BorderSide(width: 1, color: Colors.black12))),
         child: Text(
@@ -140,11 +155,11 @@ class RightCategoryNav extends StatefulWidget {
 }
 
 class _RightCategoryNavState extends State<RightCategoryNav> {
-
   @override
   Widget build(BuildContext context) {
-
-    int selected = Provider.of<ChildCategory>(context).selected;
+    int selected = Provider
+        .of<ChildCategory>(context)
+        .selected;
     final childCategory = Provider.of<ChildCategory>(context);
     return Container(
       height: ScreenUtil().setHeight(80),
@@ -161,7 +176,10 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
               ? childCategory.childCategoryList[selected].bxMallSubDto.length
               : 0,
           itemBuilder: (context, index) {
-            return _rightInkWell(Provider.of<ChildCategory>(context).childCategoryList[selected].bxMallSubDto[index]);
+            return _rightInkWell(Provider
+                .of<ChildCategory>(context)
+                .childCategoryList[selected]
+                .bxMallSubDto[index]);
           }),
     );
   }
@@ -179,5 +197,48 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
         ),
       ),
     );
+  }
+}
+
+
+//商品列表，可以上拉加载
+
+class CategoryGoodsList extends StatefulWidget {
+  @override
+  _CategoryGoodsListState createState() => _CategoryGoodsListState();
+}
+
+class _CategoryGoodsListState extends State<CategoryGoodsList> {
+
+  List<CategoryListData> list = [];
+
+  @override
+  void initState() {
+    _getGoodList();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('商品列表'),
+    );
+  }
+
+  void _getGoodList()async {
+    var data={
+      'categoryId':'4',
+      'categorySubId':"",
+      'page':1
+    };
+    await request('getMallGoods',formData:data ).then((val){
+      var  data = json.decode(val.toString());
+      CategoryGoodsListModel goodsList=  CategoryGoodsListModel.fromJson(data);
+      setState(() {
+        list= goodsList.data;
+      });
+      print('>>>>>>>>>>>>>>>>>>>:${list[0].goodsName}');
+    });
+
   }
 }
