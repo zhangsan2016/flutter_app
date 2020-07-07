@@ -49,6 +49,10 @@ dependencies:
   permission_handler: ^4.4.0+hotfix.2
   # 用户消息
   oktoast: ^2.3.2
+  # flutter 图片保存
+  image_gallery_saver: '^1.5.0'
+  # 获取本地存储路径
+  path_provider: ^0.4.0
 
 
 dev_dependencies:
@@ -79,6 +83,7 @@ flutter:
     - images/shangping.png
     - images/shangping2.png
     - images/hengfu.png
+    - images/checkp.png
 
 
   # To add assets to your application, add an assets section, like this:

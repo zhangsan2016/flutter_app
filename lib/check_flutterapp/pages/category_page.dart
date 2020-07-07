@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -18,6 +19,13 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
+  @override
+  void initState() {
+    super.initState();
+    // 申请权限
+    _requestPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +48,23 @@ class _CategoryPageState extends State<CategoryPage> {
         ),
       ),
     );
+  }
+
+  /**
+   *  申请权限
+   */
+  Future _requestPermission() async {
+    // 申请权限
+    Map<PermissionGroup, PermissionStatus> permissions =
+        await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    // 申请结果
+    PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
+    if (permission == PermissionStatus.granted) {
+      showToast('权限申请通过', position: ToastPosition.bottom);
+    } else {
+      showToast('权限申请被拒绝', position: ToastPosition.bottom);
+    }
   }
 }
 
@@ -91,7 +116,6 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
         CategoryModel categoryModel = CategoryModel(mallCategoryId: '类型 $i');
         categoryModel.bxMallSubDto = new List<BxMallSubDto>();
 
-
         // 添加“全部”在最前
         BxMallSubDto all = new BxMallSubDto();
         all.mallSubId = "00";
@@ -125,6 +149,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
    */
   Widget _leftInkWell(String type, BuildContext context, int index) {
     int selected = Provider.of<ChildCategory>(context).selected;
+    // 判断是否当前显示的状态
     bool isClick = selected == index;
     return InkWell(
       onTap: () {
@@ -159,9 +184,7 @@ class RightCategoryNav extends StatefulWidget {
 class _RightCategoryNavState extends State<RightCategoryNav> {
   @override
   Widget build(BuildContext context) {
-    int selected = Provider
-        .of<ChildCategory>(context)
-        .selected;
+    int selected = Provider.of<ChildCategory>(context).selected;
     final childCategory = Provider.of<ChildCategory>(context);
     return Container(
       height: ScreenUtil().setHeight(80),
@@ -178,8 +201,7 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
               ? childCategory.childCategoryList[selected].bxMallSubDto.length
               : 0,
           itemBuilder: (context, index) {
-            return _rightInkWell(Provider
-                .of<ChildCategory>(context)
+            return _rightInkWell(Provider.of<ChildCategory>(context)
                 .childCategoryList[selected]
                 .bxMallSubDto[index]);
           }),
@@ -190,11 +212,6 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
     return InkWell(
       onTap: () {
         print('_rightInkWell  ${item.mallSubName}');
-
-        // 申请权限
-
-         _requestPermission();
-
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
@@ -205,36 +222,16 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
       ),
     );
   }
-
-  /**
-   *  申请权限
-   */
-  Future _requestPermission() async {
-
-    // 申请权限
-    Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-    // 申请结果
-    PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
-    if (permission == PermissionStatus.granted) {
-      showToast('权限申请通过',position: ToastPosition.bottom);
-    } else {
-      showToast('权限申请被拒绝',position: ToastPosition.bottom);
-
-    }
-  }
 }
 
-
 //商品列表，可以上拉加载
-
 class CategoryGoodsList extends StatefulWidget {
   @override
   _CategoryGoodsListState createState() => _CategoryGoodsListState();
 }
 
 class _CategoryGoodsListState extends State<CategoryGoodsList> {
-
-  List<CategoryListData> list = [];
+  List<CategoryListData> categoryListData = [];
 
   @override
   void initState() {
@@ -245,24 +242,122 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('商品列表'),
+      child: Container(
+        width: ScreenUtil().setWidth(570),
+        height: ScreenUtil().setHeight(800),
+        child: ListView.builder(
+            itemCount: categoryListData.length,
+            itemBuilder: (context, index) {
+              return _goodsList(index);
+            }),
+      ),
     );
   }
 
-  void _getGoodList()async {
-    var data={
-      'categoryId':'4',
-      'categorySubId':"",
-      'page':1
-    };
-    await request('getMallGoods',formData:data ).then((val){
-      var  data = json.decode(val.toString());
-      CategoryGoodsListModel goodsList=  CategoryGoodsListModel.fromJson(data);
-      setState(() {
-        list= goodsList.data;
-      });
-      print('>>>>>>>>>>>>>>>>>>>:${list[0].goodsName}');
-    });
+  void _getGoodList() async {
+    /*  var data = {'categoryId': '4', 'categorySubId': "", 'page': 1};
+    await request('getMallGoods', formData: data).then((val) {
+      var data = json.decode(val.toString());
+      CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
 
+      // 生成数据测试用
+      List<CategoryListData> productionData = [];
+      for (int i = 0; i < 20; i++) {
+        CategoryListData cld = new CategoryListData();
+        cld.image = 'images/checkp.png';
+        cld.goodsName = 'goods${55 + i}';
+        cld.presentPrice = (998.62 + Random().nextInt(10));
+        cld.oriPrice = (662.62 + Random().nextInt(3));
+        productionData.add(cld);
+      }
+
+      print('xxxxxxxxxxxxxxxxxx ${productionData.length}');
+
+      setState(() {
+        // categoryListData = goodsList.data;
+        categoryListData = productionData;
+      });
+    //  print('>>>>>>>>>>>>>>>>>>>:${list[0].goodsName}');
+    });*/
+
+    // 生成数据测试用
+    List<CategoryListData> productionData = [];
+    int num =10 + Random().nextInt(30);
+    for (int i = 0; i < num; i++) {
+      CategoryListData cld = new CategoryListData();
+      cld.image = 'images/checkp.png';
+      cld.goodsName = '商品名称信息${55 + i}';
+      cld.presentPrice = (998.62 + Random().nextInt(10));
+      cld.oriPrice = (662.62 + Random().nextInt(3));
+      productionData.add(cld);
+    }
+
+    setState(() {
+      // categoryListData = goodsList.data;
+      categoryListData = productionData;
+    });
+  }
+
+  Widget goodsImage(index) {
+    return Container(
+      width: ScreenUtil().setWidth(200),
+      child: Image.asset(
+        'images/checkp.png',
+        fit: BoxFit.fill,
+      ),
+    );
+  }
+
+  Widget goodsPirce(index) {
+    return Container(
+      width: ScreenUtil().setWidth(320),
+       margin: EdgeInsets.only(top: 20.0),
+      child: Row(
+        children: <Widget>[
+          Text(
+            '￥${categoryListData[index].presentPrice}',
+            style:
+                TextStyle(color: Colors.pink, fontSize: ScreenUtil().setSp(30)),
+          ),
+          Text('￥${categoryListData[index].oriPrice}',
+            style: TextStyle(
+                color: Colors.black26, decoration: TextDecoration.lineThrough,fontSize: ScreenUtil().setSp(22)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _goodsList(index) {
+    return Container(
+      decoration: BoxDecoration (
+          border: Border(bottom: BorderSide(width: 1, color: Colors.black12))),
+      margin: EdgeInsets.all(5),
+      child: Row(
+        children: <Widget>[
+          goodsImage(index),
+          Column(
+            children: <Widget>[
+              goodsName(index),
+              goodsPirce(index),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget goodsName(index) {
+    return Container(
+     // color: Colors.pink,
+      padding:EdgeInsets.all(5.0) ,
+      margin: EdgeInsets.only(top: 5.0),
+      width: ScreenUtil().setWidth(340),
+      child: Text('${categoryListData[index].goodsName}',
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle( fontSize: ScreenUtil().setSp(28),),
+      ),
+    );
   }
 }
