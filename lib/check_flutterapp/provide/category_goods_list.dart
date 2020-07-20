@@ -5,7 +5,6 @@ import 'package:flutterapp/check_flutterapp/entity/category_goods_list_model.dar
 
 class CategoryGoodsListProvide with ChangeNotifier {
   List<CategoryListData> goodsList = [];
-  int selected = 0;
 
   void getGoodsList( List<CategoryListData> list) {
 
@@ -15,8 +14,4 @@ class CategoryGoodsListProvide with ChangeNotifier {
 
   }
 
-  void setSelected(int s ) {
-    selected = s;
-    notifyListeners();
-  }
 }

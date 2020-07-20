@@ -39,11 +39,13 @@ class _CategoryPageState extends State<CategoryPage> {
             // 左侧导航
             LeftCatgegoryNav(),
             // 右侧导航
-            Column(
-              children: <Widget>[
-                RightCategoryNav(),
-                CategoryGoodsList(),
-              ],
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  RightCategoryNav(),
+                  CategoryGoodsList(),
+                ],
+              ),
             ),
           ],
         ),
@@ -84,7 +86,8 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
   Future<void> initState() {
     super.initState();
     _getCategory();
-
+    // 获取商品列表
+    //  _getGoodList();
   }
 
   @override
@@ -95,10 +98,16 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       decoration: BoxDecoration(
           border: Border(right: BorderSide(width: 1, color: Colors.black12))),
       child: ListView.builder(
-          itemCount: childCategory.childCategoryList.length != 0 ? childCategory.childCategoryList.length : 0,
+          itemCount: childCategory.childCategoryList.length != 0
+              ? childCategory.childCategoryList.length
+              : 0,
           itemBuilder: (context, index) {
             return _leftInkWell(
-                Provider.of<ChildCategory>(context).childCategoryList[index].mallCategoryId, context, index);
+                Provider.of<ChildCategory>(context)
+                    .childCategoryList[index]
+                    .mallCategoryId,
+                context,
+                index);
           }),
     );
   }
@@ -123,7 +132,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
         decoration: BoxDecoration(
             color: isClick ? Color.fromRGBO(236, 236, 236, 1) : Colors.white,
             border:
-            Border(bottom: BorderSide(width: 1, color: Colors.black12))),
+                Border(bottom: BorderSide(width: 1, color: Colors.black12))),
         child: Text(
           type,
           style: TextStyle(fontSize: ScreenUtil().setSp(28)),
@@ -161,16 +170,17 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       }
       setState(() {
         list = categoryModels;
-        Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
+        Provider.of<ChildCategory>(context, listen: false)
+            .getchildCategory(list);
       });
     });
 
     // list = category.data;
   }
 
-
   int countNum = 0;
-  void _getGoodList({String  categoryId}) async {
+
+  void _getGoodList({String categoryId}) async {
     /*  var data = {'categoryId': '4', 'categorySubId': "", 'page': 1};
     await request('getMallGoods', formData: data).then((val) {
       var data = json.decode(val.toString());
@@ -198,8 +208,9 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
 
     // 生成数据测试用
     List<CategoryListData> productionData = [];
-    String image = countNum%2 == 0?'images/checkp.png':'images/checkp2.png';
-    int num =10 + Random().nextInt(30);
+    String image =
+        countNum % 2 == 0 ? 'images/checkp.png' : 'images/checkp2.png';
+    int num = 10 + Random().nextInt(30);
     for (int i = 0; i < num; i++) {
       CategoryListData cld = new CategoryListData();
       cld.image = image;
@@ -226,7 +237,10 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
   @override
   Widget build(BuildContext context) {
     int selected = Provider.of<ChildCategory>(context).selected;
-    final childCategory = Provider.of<ChildCategory>(context);
+    final childCategoryList = Provider.of<ChildCategory>(context).childCategoryList;
+    if(childCategoryList.length == 0){
+      return Container();
+    }
     return Container(
       height: ScreenUtil().setHeight(80),
       width: ScreenUtil().setWidth(570),
@@ -238,13 +252,9 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
       ),
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: childCategory.childCategoryList.length != 0
-              ? childCategory.childCategoryList[selected].bxMallSubDto.length
-              : 0,
+          itemCount: childCategoryList[selected].bxMallSubDto.length,
           itemBuilder: (context, index) {
-            return _rightInkWell(Provider.of<ChildCategory>(context)
-                .childCategoryList[selected]
-                .bxMallSubDto[index]);
+            return _rightInkWell(Provider.of<ChildCategory>(context).childCategoryList[selected].bxMallSubDto[index]);
           }),
     );
   }
@@ -272,32 +282,30 @@ class CategoryGoodsList extends StatefulWidget {
 }
 
 class _CategoryGoodsListState extends State<CategoryGoodsList> {
-
   @override
   void initState() {
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return
-      Consumer<CategoryGoodsListProvide>(
-          builder: (context, counter, _) {
-           return Container(
-              width: ScreenUtil().setWidth(570),
-              height: ScreenUtil().setHeight(800),
-              child: ListView.builder(
-                  itemCount: Provider.of<CategoryGoodsListProvide>(context, listen: false).goodsList.length,
-                  itemBuilder: (context, index) {
-                    return _goodsList(Provider.of<CategoryGoodsListProvide>(context, listen: false).goodsList[index]);
-                  }),
-            );
-          }
+    return Consumer<CategoryGoodsListProvide>(builder: (context, counter, _) {
+      return Container(
+        width: ScreenUtil().setWidth(570),
+        height: ScreenUtil().setHeight(800),
+        child: ListView.builder(
+            itemCount:
+                Provider.of<CategoryGoodsListProvide>(context, listen: false)
+                    .goodsList
+                    .length,
+            itemBuilder: (context, index) {
+              return _goodsList(
+                  Provider.of<CategoryGoodsListProvide>(context, listen: false)
+                      .goodsList[index]);
+            }),
       );
+    });
   }
-
-
 
   Widget goodsImage(CategoryListData categoryListData) {
     return Container(
@@ -312,7 +320,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   Widget goodsPirce(categoryListData) {
     return Container(
       width: ScreenUtil().setWidth(320),
-       margin: EdgeInsets.only(top: 20.0),
+      margin: EdgeInsets.only(top: 20.0),
       child: Row(
         children: <Widget>[
           Text(
@@ -320,9 +328,12 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
             style:
                 TextStyle(color: Colors.pink, fontSize: ScreenUtil().setSp(30)),
           ),
-          Text('￥${categoryListData.oriPrice}',
+          Text(
+            '￥${categoryListData.oriPrice}',
             style: TextStyle(
-                color: Colors.black26, decoration: TextDecoration.lineThrough,fontSize: ScreenUtil().setSp(22)),
+                color: Colors.black26,
+                decoration: TextDecoration.lineThrough,
+                fontSize: ScreenUtil().setSp(22)),
           ),
         ],
       ),
@@ -331,7 +342,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
 
   Widget _goodsList(CategoryListData categoryListData) {
     return Container(
-      decoration: BoxDecoration (
+      decoration: BoxDecoration(
           border: Border(bottom: BorderSide(width: 1, color: Colors.black12))),
       margin: EdgeInsets.all(5),
       child: Row(
@@ -350,14 +361,17 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
 
   Widget goodsName(CategoryListData categoryListData) {
     return Container(
-     // color: Colors.pink,
-      padding:EdgeInsets.all(5.0) ,
+      // color: Colors.pink,
+      padding: EdgeInsets.all(5.0),
       margin: EdgeInsets.only(top: 5.0),
       width: ScreenUtil().setWidth(340),
-      child: Text('${categoryListData.goodsName}',
+      child: Text(
+        '${categoryListData.goodsName}',
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle( fontSize: ScreenUtil().setSp(28),),
+        style: TextStyle(
+          fontSize: ScreenUtil().setSp(28),
+        ),
       ),
     );
   }
