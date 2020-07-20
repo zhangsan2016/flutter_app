@@ -191,10 +191,9 @@ void main() {
 //  print('object ${childCategoryList.length} ');
 
 
-  for(int i = 0; i <= 10; i++){
-    print('${  Random().nextInt(10)}');
-  }
+/*  for(int i = 0; i <= 10; i++){
+    print('${1+  Random().nextInt(2)}');
+  }*/
 
-
-
+  print('${2%2}');
 }

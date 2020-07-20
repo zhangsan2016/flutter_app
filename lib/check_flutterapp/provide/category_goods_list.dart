@@ -1,20 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutterapp/check_flutterapp/entity/category_big_model.dart';
+import 'package:flutterapp/check_flutterapp/entity/category_goods_list_model.dart';
 
-class ChildCategory with ChangeNotifier {
-  List<CategoryModel> childCategoryList = [];
+class CategoryGoodsListProvide with ChangeNotifier {
+  List<CategoryListData> goodsList = [];
   int selected = 0;
 
-  void getchildCategory( List<CategoryModel> list) {
+  void getGoodsList( List<CategoryListData> list) {
 
     // 通知状态更新
-    childCategoryList = list;
+    goodsList = list;
     notifyListeners();
 
   }
 
-  void setSelected( int s ) {
+  void setSelected(int s ) {
     selected = s;
     notifyListeners();
   }
