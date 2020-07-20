@@ -85,9 +85,15 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
   @override
   Future<void> initState() {
     super.initState();
-    _getCategory();
-    // 获取商品列表
-    //  _getGoodList();
+
+    // 在InitState（）中使用 Provider.of<T>(context)是错误的。
+    // 我们通过 addPostFrameCallback 回调中在第一帧 build 结束时调用 increment 方法，这样就不会出现构建错误了。
+    WidgetsBinding.instance.addPostFrameCallback((callback){
+      _getCategory();
+      // 获取商品列表
+      _getGoodList();
+    });
+
   }
 
   @override
