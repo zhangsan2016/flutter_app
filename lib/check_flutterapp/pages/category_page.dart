@@ -93,7 +93,6 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       // 获取商品列表
       _getGoodList();
     });
-
   }
 
   @override
@@ -295,22 +294,24 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CategoryGoodsListProvide>(builder: (context, counter, _) {
-      return Container(
-        width: ScreenUtil().setWidth(570),
-        height: ScreenUtil().setHeight(800),
-        child: ListView.builder(
-            itemCount:
-                Provider.of<CategoryGoodsListProvide>(context, listen: false)
-                    .goodsList
-                    .length,
-            itemBuilder: (context, index) {
-              return _goodsList(
-                  Provider.of<CategoryGoodsListProvide>(context, listen: false)
-                      .goodsList[index]);
-            }),
-      );
-    });
+    return Expanded(
+      child: Consumer<CategoryGoodsListProvide>(builder: (context, counter, _) {
+        return Container(
+          width: ScreenUtil().setWidth(570),
+          height: ScreenUtil().setHeight(800),
+          child: ListView.builder(
+              itemCount:
+              Provider.of<CategoryGoodsListProvide>(context, listen: false)
+                  .goodsList
+                  .length,
+              itemBuilder: (context, index) {
+                return _goodsList(
+                    Provider.of<CategoryGoodsListProvide>(context, listen: false)
+                        .goodsList[index]);
+              }),
+        );
+      }),
+    );
   }
 
   Widget goodsImage(CategoryListData categoryListData) {
