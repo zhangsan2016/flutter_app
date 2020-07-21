@@ -298,7 +298,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
       child: Consumer<CategoryGoodsListProvide>(builder: (context, counter, _) {
         return Container(
           width: ScreenUtil().setWidth(570),
-          height: ScreenUtil().setHeight(800),
+        //  height: ScreenUtil().setHeight(800),
           child: ListView.builder(
               itemCount:
               Provider.of<CategoryGoodsListProvide>(context, listen: false)
