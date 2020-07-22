@@ -113,7 +113,6 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
    * 根据 index 获取 json中的单个类别
    */
   int listIndex = 0;
-
   Widget _leftInkWell(String type, BuildContext context, int index) {
     // 判断是否当前显示的状态
     bool isClick = listIndex == index;
@@ -127,8 +126,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
         var categoryId = list[index].mallCategoryId;
 
         // Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
-        Provider.of<ChildCategory>(context, listen: false)
-            .getchildCategory(childList);
+        Provider.of<ChildCategory>(context, listen: false).getchildCategory(childList,categoryId);
         _getGoodList(categoryId: categoryId);
       },
       child: Container(
@@ -176,8 +174,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       }
       setState(() {
         list = categoryModels;
-        Provider.of<ChildCategory>(context, listen: false)
-            .getchildCategory(list[0].bxMallSubDto);
+        Provider.of<ChildCategory>(context, listen: false).getchildCategory(list[0].bxMallSubDto,list[0].mallCategoryId);
       });
     });
 
@@ -254,7 +251,6 @@ class RightCategoryNav extends StatefulWidget {
 class _RightCategoryNavState extends State<RightCategoryNav> {
   @override
   Widget build(BuildContext context) {
-    int selected = Provider.of<ChildCategory>(context).selected;
     final childCategoryList =
         Provider.of<ChildCategory>(context).childCategoryList;
     if (childCategoryList.length == 0) {
@@ -273,8 +269,7 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
           scrollDirection: Axis.horizontal,
           itemCount: childCategoryList.length,
           itemBuilder: (context, index) {
-            return _rightInkWell(index,
-                Provider.of<ChildCategory>(context).childCategoryList[index]);
+            return _rightInkWell(index, Provider.of<ChildCategory>(context).childCategoryList[index]);
           }),
     );
   }
@@ -284,7 +279,7 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
     bool isClick = selected == index;
     return InkWell(
       onTap: () {
-        Provider.of<ChildCategory>(context, listen: false).setSelected(index);
+        Provider.of<ChildCategory>(context, listen: false).setSelected(index,item.mallSubId);
         print('_rightInkWell  ${item.mallSubName}');
       },
       child: Container(
