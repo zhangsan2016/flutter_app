@@ -97,22 +97,14 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
 
   @override
   Widget build(BuildContext context) {
-    final childCategory = Provider.of<ChildCategory>(context);
     return Container(
       width: ScreenUtil().setWidth(180),
       decoration: BoxDecoration(
           border: Border(right: BorderSide(width: 1, color: Colors.black12))),
       child: ListView.builder(
-          itemCount: childCategory.childCategoryList.length != 0
-              ? childCategory.childCategoryList.length
-              : 0,
+          itemCount: list.length,
           itemBuilder: (context, index) {
-            return _leftInkWell(
-                Provider.of<ChildCategory>(context)
-                    .childCategoryList[index]
-                    .mallCategoryId,
-                context,
-                index);
+            return _leftInkWell(list[index].mallCategoryId, context, index);
           }),
     );
   }
@@ -120,15 +112,22 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
   /**
    * 根据 index 获取 json中的单个类别
    */
+  int listIndex = 0;
   Widget _leftInkWell(String type, BuildContext context, int index) {
-    int selected = Provider.of<ChildCategory>(context).selected;
     // 判断是否当前显示的状态
-    bool isClick = selected == index;
+    bool isClick = listIndex == index;
     return InkWell(
       onTap: () {
-        print('_leftInkWell $type');
-        Provider.of<ChildCategory>(context, listen: false).setSelected(index);
-        _getGoodList(categoryId: '$index');
+          setState(() {
+            listIndex = index;
+          });
+
+          var childList = list[index].bxMallSubDto;
+          var categoryId= list[index].mallCategoryId;
+
+       // Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
+          Provider.of<ChildCategory>(context, listen: false).getchildCategory(childList);
+        _getGoodList(categoryId: categoryId);
       },
       child: Container(
         height: ScreenUtil().setHeight(100),
@@ -175,8 +174,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       }
       setState(() {
         list = categoryModels;
-        Provider.of<ChildCategory>(context, listen: false)
-            .getchildCategory(list);
+        Provider.of<ChildCategory>(context, listen: false).getchildCategory(list[0].bxMallSubDto);
       });
     });
 
@@ -231,7 +229,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
 }
 
 /**
- * 右侧导航
+ * 小类右侧导航
  */
 class RightCategoryNav extends StatefulWidget {
   @override
@@ -257,23 +255,27 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
       ),
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: childCategoryList[selected].bxMallSubDto.length,
+          itemCount: childCategoryList.length,
           itemBuilder: (context, index) {
-            return _rightInkWell(Provider.of<ChildCategory>(context).childCategoryList[selected].bxMallSubDto[index]);
+            return _rightInkWell(index,Provider.of<ChildCategory>(context).childCategoryList[index]);
           }),
     );
   }
 
-  Widget _rightInkWell(BxMallSubDto item) {
+  Widget _rightInkWell(int index,BxMallSubDto item) {
+    int selected = Provider.of<ChildCategory>(context).selected;
+    bool isClick = selected == index;
     return InkWell(
       onTap: () {
+        Provider.of<ChildCategory>(context, listen: false).setSelected(index);
         print('_rightInkWell  ${item.mallSubName}');
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
         child: Text(
           item.mallSubName,
-          style: TextStyle(fontSize: ScreenUtil().setSp(28)),
+          style: TextStyle(fontSize: ScreenUtil().setSp(28),
+          color: isClick?Colors.pink:Colors.black),
         ),
       ),
     );
