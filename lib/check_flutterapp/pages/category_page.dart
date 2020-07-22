@@ -88,7 +88,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
 
     // 在InitState（）中使用 Provider.of<T>(context)是错误的。
     // 我们通过 addPostFrameCallback 回调中在第一帧 build 结束时调用 increment 方法，这样就不会出现构建错误了。
-    WidgetsBinding.instance.addPostFrameCallback((callback){
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
       _getCategory();
       // 获取商品列表
       _getGoodList();
@@ -113,21 +113,23 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
    * 根据 index 获取 json中的单个类别
    */
   int listIndex = 0;
+
   Widget _leftInkWell(String type, BuildContext context, int index) {
     // 判断是否当前显示的状态
     bool isClick = listIndex == index;
     return InkWell(
       onTap: () {
-          setState(() {
-            listIndex = index;
-          });
+        setState(() {
+          listIndex = index;
+        });
 
-          var childList = list[index].bxMallSubDto;
-          var categoryId= list[index].mallCategoryId;
+        var childList = list[index].bxMallSubDto;
+        var categoryId = list[index].mallCategoryId;
 
-       // Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
-          Provider.of<ChildCategory>(context, listen: false).getchildCategory(childList);
-          _getGoodList(categoryId: categoryId);
+        // Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
+        Provider.of<ChildCategory>(context, listen: false)
+            .getchildCategory(childList);
+        _getGoodList(categoryId: categoryId);
       },
       child: Container(
         height: ScreenUtil().setHeight(100),
@@ -174,7 +176,8 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       }
       setState(() {
         list = categoryModels;
-        Provider.of<ChildCategory>(context, listen: false).getchildCategory(list[0].bxMallSubDto);
+        Provider.of<ChildCategory>(context, listen: false)
+            .getchildCategory(list[0].bxMallSubDto);
       });
     });
 
@@ -185,6 +188,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
    *  根据类型id获取商品列表
    */
   int countNum = 0;
+
   void _getGoodList({String categoryId}) async {
     /*  var data = {'categoryId': '4', 'categorySubId': "", 'page': 1};
     await request('getMallGoods', formData: data).then((val) {
@@ -234,7 +238,8 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
     }
     countNum++;
 
-    Provider.of<CategoryGoodsListProvide>(context, listen: false).getGoodsList(productionData);
+    Provider.of<CategoryGoodsListProvide>(context, listen: false)
+        .getGoodsList(productionData);
   }
 }
 
@@ -250,8 +255,9 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
   @override
   Widget build(BuildContext context) {
     int selected = Provider.of<ChildCategory>(context).selected;
-    final childCategoryList = Provider.of<ChildCategory>(context).childCategoryList;
-    if(childCategoryList.length == 0){
+    final childCategoryList =
+        Provider.of<ChildCategory>(context).childCategoryList;
+    if (childCategoryList.length == 0) {
       return Container();
     }
     return Container(
@@ -267,12 +273,13 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
           scrollDirection: Axis.horizontal,
           itemCount: childCategoryList.length,
           itemBuilder: (context, index) {
-            return _rightInkWell(index,Provider.of<ChildCategory>(context).childCategoryList[index]);
+            return _rightInkWell(index,
+                Provider.of<ChildCategory>(context).childCategoryList[index]);
           }),
     );
   }
 
-  Widget _rightInkWell(int index,BxMallSubDto item) {
+  Widget _rightInkWell(int index, BxMallSubDto item) {
     int selected = Provider.of<ChildCategory>(context).selected;
     bool isClick = selected == index;
     return InkWell(
@@ -284,8 +291,9 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
         padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
         child: Text(
           item.mallSubName,
-          style: TextStyle(fontSize: ScreenUtil().setSp(28),
-          color: isClick?Colors.pink:Colors.black),
+          style: TextStyle(
+              fontSize: ScreenUtil().setSp(28),
+              color: isClick ? Colors.pink : Colors.black),
         ),
       ),
     );
@@ -308,20 +316,19 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Consumer<CategoryGoodsListProvide>(builder: (context, counter, _) {
-        return Container(
-          width: ScreenUtil().setWidth(570),
-        //  height: ScreenUtil().setHeight(800),
-          child: ListView.builder(
-              itemCount:
-              Provider.of<CategoryGoodsListProvide>(context, listen: false)
-                  .goodsList
-                  .length,
-              itemBuilder: (context, index) {
-                return _goodsList(
-                    Provider.of<CategoryGoodsListProvide>(context, listen: false)
-                        .goodsList[index]);
-              }),
-        );
+        if (counter.goodsList.length > 0) {
+          return Container(
+            width: ScreenUtil().setWidth(570),
+            //  height: ScreenUtil().setHeight(800),
+            child: ListView.builder(
+                itemCount: counter.goodsList.length ,
+                itemBuilder: (context, index) {
+                  return _goodsList(counter.goodsList[index]);
+                }),
+          );
+        } else {
+          return Text('暂时没有数据');
+        }
       }),
     );
   }
