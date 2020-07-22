@@ -127,7 +127,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
 
        // Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
           Provider.of<ChildCategory>(context, listen: false).getchildCategory(childList);
-        _getGoodList(categoryId: categoryId);
+          _getGoodList(categoryId: categoryId);
       },
       child: Container(
         height: ScreenUtil().setHeight(100),
@@ -181,13 +181,23 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
     // list = category.data;
   }
 
+  /**
+   *  根据类型id获取商品列表
+   */
   int countNum = 0;
-
   void _getGoodList({String categoryId}) async {
     /*  var data = {'categoryId': '4', 'categorySubId': "", 'page': 1};
     await request('getMallGoods', formData: data).then((val) {
       var data = json.decode(val.toString());
       CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
+
+      // 网络获取数据中做非空判断，以免程序崩溃
+       if(goodsList.data==null){
+         Provide.value<CategoryGoodsListProvide>(context).getGoodsList([]);
+        }else{
+          Provide.value<CategoryGoodsListProvide>(context).getGoodsList(goodsList.data);
+
+        }
 
       // 生成数据测试用
       List<CategoryListData> productionData = [];
