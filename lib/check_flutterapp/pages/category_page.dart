@@ -11,6 +11,7 @@ import 'package:flutterapp/check_flutterapp/entity/category_goods_list_model.dar
 import 'package:flutterapp/check_flutterapp/provide/category_goods_list.dart';
 import 'package:flutterapp/check_flutterapp/provide/child_category.dart';
 import 'package:flutterapp/check_flutterapp/service/service_method.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -394,6 +395,15 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
     int page = Provider.of<ChildCategory>(context, listen: false).page;
     print('page = $page');
     if(page == 3){
+      Fluttertoast.showToast(
+          msg: "已经到底了",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
       Provider.of<ChildCategory>(context,listen: false).changeNoMore('没有更多了');
       return;
     }

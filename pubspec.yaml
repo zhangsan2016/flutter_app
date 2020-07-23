@@ -53,7 +53,10 @@ dependencies:
   image_gallery_saver: '^1.5.0'
   # 获取本地存储路径
   path_provider: ^0.4.0
-
+  # 实现 android Toast
+  fluttertoast: ^7.0.1
+  # flutter 路游框架，大项目中推荐使用
+  fluro: "^1.6.3"
 
 dev_dependencies:
   # 开发依赖项是不包含在我们的应用程序源代码中的依赖项，它是开发过程中的一些辅助工具、脚本，和node中的开发依赖项相似。
