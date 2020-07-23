@@ -307,8 +307,8 @@ class CategoryGoodsList extends StatefulWidget {
 }
 
 class _CategoryGoodsListState extends State<CategoryGoodsList> {
-  GlobalKey<RefreshFooterState> _footerkey =
-      new GlobalKey<RefreshFooterState>();
+  GlobalKey<RefreshFooterState> _footerkey = new GlobalKey<RefreshFooterState>();
+  var scrollController=new ScrollController();
 
   @override
   void initState() {
@@ -319,6 +319,13 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Consumer<CategoryGoodsListProvide>(builder: (context, counter, _) {
+        try{
+          if(Provider.of<ChildCategory>(context, listen: false).page==1){
+            scrollController.jumpTo(0.0);
+          }
+        }catch(e){
+          print('进入页面第一次初始化：${e}');
+        }
         if (counter.goodsList.length > 0) {
           return Container(
             width: ScreenUtil().setWidth(570),
@@ -334,6 +341,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
                   moreInfo: '加载中',
                   loadReadyText: '上拉加载'),
               child: ListView.builder(
+                  controller: scrollController,
                   itemCount: counter.goodsList.length,
                   itemBuilder: (context, index) {
                     return _goodsList(counter.goodsList[index]);
