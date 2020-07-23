@@ -351,7 +351,10 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
               },
               loadMore: () async {
               //  print('没有更多了.......');
-                _getMoreList();
+                await new Future.delayed(const Duration(seconds: 2), () {
+                  _getMoreList();
+                });
+
               },
             ),
           );
