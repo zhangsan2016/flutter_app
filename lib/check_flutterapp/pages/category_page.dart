@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutterapp/check_flutterapp/entity/category_big_model.dart';
 import 'package:flutterapp/check_flutterapp/entity/category_goods_list_model.dart';
@@ -113,6 +114,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
    * 根据 index 获取 json中的单个类别
    */
   int listIndex = 0;
+
   Widget _leftInkWell(String type, BuildContext context, int index) {
     // 判断是否当前显示的状态
     bool isClick = listIndex == index;
@@ -126,7 +128,8 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
         var categoryId = list[index].mallCategoryId;
 
         // Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
-        Provider.of<ChildCategory>(context, listen: false).getchildCategory(childList,categoryId);
+        Provider.of<ChildCategory>(context, listen: false)
+            .getchildCategory(childList, categoryId);
         _getGoodList(categoryId: categoryId);
       },
       child: Container(
@@ -174,7 +177,8 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
       }
       setState(() {
         list = categoryModels;
-        Provider.of<ChildCategory>(context, listen: false).getchildCategory(list[0].bxMallSubDto,list[0].mallCategoryId);
+        Provider.of<ChildCategory>(context, listen: false)
+            .getchildCategory(list[0].bxMallSubDto, list[0].mallCategoryId);
       });
     });
 
@@ -185,7 +189,6 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
    *  根据类型id获取商品列表
    */
   int countNum = 0;
-
   void _getGoodList({String categoryId}) async {
     /*  var data = {'categoryId': '4', 'categorySubId': "", 'page': 1};
     await request('getMallGoods', formData: data).then((val) {
@@ -269,7 +272,8 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
           scrollDirection: Axis.horizontal,
           itemCount: childCategoryList.length,
           itemBuilder: (context, index) {
-            return _rightInkWell(index, Provider.of<ChildCategory>(context).childCategoryList[index]);
+            return _rightInkWell(index,
+                Provider.of<ChildCategory>(context).childCategoryList[index]);
           }),
     );
   }
@@ -279,7 +283,8 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
     bool isClick = selected == index;
     return InkWell(
       onTap: () {
-        Provider.of<ChildCategory>(context, listen: false).setSelected(index,item.mallSubId);
+        Provider.of<ChildCategory>(context, listen: false)
+            .setSelected(index, item.mallSubId);
         print('_rightInkWell  ${item.mallSubName}');
       },
       child: Container(
@@ -302,6 +307,9 @@ class CategoryGoodsList extends StatefulWidget {
 }
 
 class _CategoryGoodsListState extends State<CategoryGoodsList> {
+  GlobalKey<RefreshFooterState> _footerkey =
+      new GlobalKey<RefreshFooterState>();
+
   @override
   void initState() {
     super.initState();
@@ -315,17 +323,87 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
           return Container(
             width: ScreenUtil().setWidth(570),
             //  height: ScreenUtil().setHeight(800),
-            child: ListView.builder(
-                itemCount: counter.goodsList.length ,
-                itemBuilder: (context, index) {
-                  return _goodsList(counter.goodsList[index]);
-                }),
+            child: EasyRefresh(
+              refreshFooter: ClassicsFooter(
+                  key: _footerkey,
+                  bgColor: Colors.white,
+                  textColor: Colors.pink,
+                  moreInfoColor: Colors.pink,
+                  showMore: true,
+                  noMoreText: Provider.of<ChildCategory>(context).noMoreText,
+                  moreInfo: '加载中',
+                  loadReadyText: '上拉加载'),
+              child: ListView.builder(
+                  itemCount: counter.goodsList.length,
+                  itemBuilder: (context, index) {
+                    return _goodsList(counter.goodsList[index]);
+                  }),
+              onRefresh: () async {
+                print('onRefresh');
+              },
+              loadMore: () async {
+              //  print('没有更多了.......');
+                _getMoreList();
+              },
+            ),
           );
         } else {
           return Text('暂时没有数据');
         }
       }),
     );
+  }
+
+
+  /**
+   *  获取更多商品
+   */
+  void _getMoreList() async {
+    /*Provide.value<ChildCategory>(context).addPage();
+    var data={
+      'categoryId':Provide.value<ChildCategory>(context).categoryId,
+      'categorySubId':Provide.value<ChildCategory>(context).subId,
+      'page':Provide.value<ChildCategory>(context).page
+    };
+
+    request('getMallGoods',formData:data ).then((val){
+      var  data = json.decode(val.toString());
+      CategoryGoodsListModel goodsList=  CategoryGoodsListModel.fromJson(data);
+
+      if(goodsList.data==null){
+        Provide.value<ChildCategory>(context).changeNoMore('没有更多了');
+      }else{
+
+        Provide.value<CategoryGoodsListProvide>(context).addGoodsList(goodsList.data);
+
+      }
+    });*/
+
+    // 生成数据测试用
+    int page = Provider.of<ChildCategory>(context, listen: false).page;
+    print('page = $page');
+    if(page == 3){
+      Provider.of<ChildCategory>(context,listen: false).changeNoMore('没有更多了');
+      return;
+    }
+
+    Provider.of<ChildCategory>(context, listen: false).addPage();
+    List<CategoryListData> productionData = [];
+    int num = 10 + Random().nextInt(30);
+    for (int i = 0; i < 5; i++) {
+
+      CategoryListData cld = new CategoryListData();
+      cld.image = 'images/checkp.png';
+      cld.goodsName = '商品名称信息${55 + i}';
+      cld.presentPrice = (998.62 + Random().nextInt(10) );
+      cld.oriPrice = (662.62 + Random().nextInt(3));
+      productionData.add(cld);
+    }
+    if(productionData==null){
+      Provider.of<ChildCategory>(context,listen: false).changeNoMore('没有更多了');
+    }else{
+      Provider.of<CategoryGoodsListProvide>(context,listen: false).addGoodsList(productionData);
+    }
   }
 
   Widget goodsImage(CategoryListData categoryListData) {
