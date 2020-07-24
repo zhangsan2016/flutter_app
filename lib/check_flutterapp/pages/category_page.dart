@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutterapp/check_flutterapp/config/application.dart';
 import 'package:flutterapp/check_flutterapp/entity/category_big_model.dart';
 import 'package:flutterapp/check_flutterapp/entity/category_goods_list_model.dart';
 import 'package:flutterapp/check_flutterapp/provide/category_goods_list.dart';
@@ -129,8 +130,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
         var categoryId = list[index].mallCategoryId;
 
         // Provider.of<ChildCategory>(context, listen: false).getchildCategory(list);
-        Provider.of<ChildCategory>(context, listen: false)
-            .getchildCategory(childList, categoryId);
+        Provider.of<ChildCategory>(context, listen: false).getchildCategory(childList, categoryId);
         _getGoodList(categoryId: categoryId);
       },
       child: Container(
@@ -224,6 +224,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
     //  print('>>>>>>>>>>>>>>>>>>>:${list[0].goodsName}');
     });*/
 
+    int selected =  Provider.of<ChildCategory>(context,listen: false).selected;
     // 生成数据测试用
     List<CategoryListData> productionData = [];
     String image =
@@ -232,7 +233,7 @@ class _LeftCatgegoryNavState extends State<LeftCatgegoryNav> {
     for (int i = 0; i < num; i++) {
       CategoryListData cld = new CategoryListData();
       cld.image = image;
-      cld.goodsName = '商品名称信息${55 + i}';
+      cld.goodsName = '商品名称信息$selected${55 + i}';
       cld.presentPrice = (998.62 + Random().nextInt(10) * countNum);
       cld.oriPrice = (662.62 + Random().nextInt(3));
       productionData.add(cld);
@@ -409,13 +410,14 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
     }
 
     Provider.of<ChildCategory>(context, listen: false).addPage();
+    int selected =  Provider.of<ChildCategory>(context,listen: false).selected;
     List<CategoryListData> productionData = [];
     int num = 10 + Random().nextInt(30);
     for (int i = 0; i < 5; i++) {
 
       CategoryListData cld = new CategoryListData();
       cld.image = 'images/checkp.png';
-      cld.goodsName = '商品名称信息${55 + i}';
+      cld.goodsName = '商品名称信息$selected${55 + i}';
       cld.presentPrice = (998.62 + Random().nextInt(10) );
       cld.oriPrice = (662.62 + Random().nextInt(3));
       productionData.add(cld);
@@ -461,7 +463,12 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   }
 
   Widget _goodsList(CategoryListData categoryListData) {
-    return Container(
+    return InkWell(
+      onTap:() {
+        print('xx ${categoryListData.goodsName}');
+        Application.router.navigateTo(context,"/detail?id=${categoryListData.goodsName}");
+      },
+      child: Container(
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(width: 1, color: Colors.black12))),
       margin: EdgeInsets.all(5),
@@ -476,6 +483,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
           ),
         ],
       ),
+    ),
     );
   }
 

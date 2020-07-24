@@ -1,4 +1,5 @@
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/check_flutterapp/pages/Index_page.dart';
 import 'package:flutterapp/check_flutterapp/pages/category_page.dart';
@@ -6,6 +7,9 @@ import 'package:flutterapp/check_flutterapp/provide/category_goods_list.dart';
 import 'package:flutterapp/check_flutterapp/provide/child_category.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
+
+import 'config/application.dart';
+import 'config/routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -36,6 +40,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final router = Router();
+    Routes.configureRoutes(router);
+    Application.router=router;
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ChildCategory()),
@@ -46,6 +55,7 @@ class MyApp extends StatelessWidget {
           return OKToast(
             child:  Container(
               child: MaterialApp(
+                onGenerateRoute: Application.router.generator,
                 title: '百姓生活++',
                 // 去掉运行时 debug 的提示
                 debugShowCheckedModeBanner: false,

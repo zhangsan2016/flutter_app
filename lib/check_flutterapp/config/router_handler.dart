@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/check_flutterapp/pages/details_page.dart';
 
 
-var usersHandler = Handler(handlerFunc:(BuildContext context,Map<String, dynamic> params){
+var detailsHandler = Handler(handlerFunc:(BuildContext context,Map<String, dynamic> params){
   return DetailsPage(params["id"][0]);
 });
 
