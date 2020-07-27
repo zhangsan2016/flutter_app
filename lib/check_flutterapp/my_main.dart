@@ -2,9 +2,9 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/check_flutterapp/pages/Index_page.dart';
-import 'package:flutterapp/check_flutterapp/pages/category_page.dart';
 import 'package:flutterapp/check_flutterapp/provide/category_goods_list.dart';
 import 'package:flutterapp/check_flutterapp/provide/child_category.dart';
+import 'package:flutterapp/check_flutterapp/provide/detailsInfo_provide.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
@@ -49,6 +49,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ChildCategory()),
         ChangeNotifierProvider(create: (_) => CategoryGoodsListProvide()),
+        ChangeNotifierProvider(create: (_) => DetailsInfoProvide()),
+
       ],
       child: Consumer<ChildCategory>(
         builder: (context, counter, _) {

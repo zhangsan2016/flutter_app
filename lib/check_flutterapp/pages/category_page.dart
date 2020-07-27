@@ -465,8 +465,8 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   Widget _goodsList(CategoryListData categoryListData) {
     return InkWell(
       onTap:() {
-        print('xx ${categoryListData.goodsName}');
-        Application.router.navigateTo(context,"/detail?id=${categoryListData.goodsName}");
+        //print('xx ${categoryListData.goodsName}');
+        Application.router.navigateTo(context,"/detail?id=${56789}");
       },
       child: Container(
       decoration: BoxDecoration(
