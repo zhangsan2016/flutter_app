@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:flutterapp/check_flutterapp/entity/DetailsModel.dart';
+import 'package:flutterapp/check_flutterapp/entity/details_model.dart';
 
 /*
  * 封装 restful 请求

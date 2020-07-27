@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutterapp/check_flutterapp/entity/DetailsModel.dart';
+import 'package:flutterapp/check_flutterapp/entity/details_model.dart';
 import 'package:flutterapp/check_flutterapp/service/service_method.dart';
 
 class DetailsInfoProvide with ChangeNotifier {
