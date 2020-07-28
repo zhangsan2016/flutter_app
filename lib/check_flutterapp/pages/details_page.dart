@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/check_flutterapp/provide/detailsInfo_provide.dart';
 import 'package:provider/provider.dart';
 
+import 'details_explain.dart';
+import 'details_top_area.dart';
+
+/**
+ * 商品详情页的首屏区域，包括图片、商品名称，商品价格，商品编号的UI展示
+ */
 class DetailsPage extends StatelessWidget {
   final String goodsId;
 
@@ -28,7 +34,10 @@ class DetailsPage extends StatelessWidget {
                   if (snapshot.hasData) {
                     return Container(
                       child: Column(children: <Widget>[
-                          Text('商品id $goodsId'),
+                        // 商品图片
+                        DetailsTopArea(),
+                        // 商品说明
+                        DetailsExplain(),
                       ],),
                     );
                 }else{
