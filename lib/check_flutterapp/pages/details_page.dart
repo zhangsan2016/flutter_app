@@ -33,6 +33,7 @@ class DetailsPage extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return Container(
+                      color: Colors.black12,
                       child: Column(children: <Widget>[
                         // 商品图片
                         DetailsTopArea(),

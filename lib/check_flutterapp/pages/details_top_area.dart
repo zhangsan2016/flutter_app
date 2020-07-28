@@ -32,7 +32,7 @@ class DetailsTopArea extends StatelessWidget {
         return Text('正在加载中......');
       }
     }
-    );
+     );
   }
 
   //商品价格方法
