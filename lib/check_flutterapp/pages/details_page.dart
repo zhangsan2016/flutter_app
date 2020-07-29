@@ -4,6 +4,7 @@ import 'package:flutterapp/check_flutterapp/provide/details_Info.dart';
 import 'package:provider/provider.dart';
 
 import 'details_explain.dart';
+import 'details_tabbar.dart';
 import 'details_top_area.dart';
 
 /**
@@ -39,6 +40,8 @@ class DetailsPage extends StatelessWidget {
                         DetailsTopArea(),
                         // 商品说明
                         DetailsExplain(),
+                        // 商品详细
+                        DetailsTabBar(),
                       ],),
                     );
                 }else{
