@@ -14,7 +14,7 @@ class DetailsTabBar extends StatelessWidget {
           var isRight = Provider.of<DetailsInfoProvide>(context, listen: false).isRight;
 
           return Container(
-            margin: EdgeInsets.only(top: 15.0),
+            margin: EdgeInsets.only(top: 10.0),
             child: Column(
              children: <Widget>[
                Row(
