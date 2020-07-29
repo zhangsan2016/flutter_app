@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/check_flutterapp/pages/Index_page.dart';
 import 'package:flutterapp/check_flutterapp/provide/category_goods_list.dart';
 import 'package:flutterapp/check_flutterapp/provide/child_category.dart';
-import 'package:flutterapp/check_flutterapp/provide/detailsInfo_provide.dart';
+import 'package:flutterapp/check_flutterapp/provide/details_Info.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 

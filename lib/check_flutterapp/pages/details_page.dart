@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/check_flutterapp/provide/detailsInfo_provide.dart';
+import 'package:flutterapp/check_flutterapp/provide/details_Info.dart';
 import 'package:provider/provider.dart';
 
 import 'details_explain.dart';

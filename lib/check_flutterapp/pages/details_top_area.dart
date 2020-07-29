@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutterapp/check_flutterapp/provide/category_goods_list.dart';
-import 'package:flutterapp/check_flutterapp/provide/detailsInfo_provide.dart';
+import 'package:flutterapp/check_flutterapp/provide/details_Info.dart';
 import 'package:provider/provider.dart';
 
 class DetailsTopArea extends StatelessWidget {
