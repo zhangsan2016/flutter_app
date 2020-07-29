@@ -2,7 +2,7 @@
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutterapp/check_flutterapp/pages/details_page.dart';
+import 'package:flutterapp/check_flutterapp/pages/details_page/details_page.dart';
 
 
 var detailsHandler = Handler(handlerFunc:(BuildContext context,Map<String, dynamic> params){
