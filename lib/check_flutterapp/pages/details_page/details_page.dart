@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/check_flutterapp/provide/details_Info.dart';
 import 'package:provider/provider.dart';
 
+import 'details_bottom.dart';
 import 'details_explain.dart';
 import 'details_tabbar.dart';
 import 'details_top_area.dart';
@@ -46,7 +47,8 @@ class DetailsPage extends StatelessWidget {
                         // 商品详细
                         DetailsWeb(),
                       ],
-                    )
+                    ),
+                    Positioned(bottom: 0, left: 0, child: DetailsBottom())
                   ],
                 );
               } else {
