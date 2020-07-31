@@ -195,8 +195,15 @@ void main() {
   print('');
 
   tempList.cast();
-  String  aa = '5566';
-  String  bb = '5566';
+  P  aa = new P('5566');
+  P  bb = new P('5566');
 
-  print('${aa == bb}');
+  print('${aa.name == bb.name}');
+}
+
+class P{
+  String name;
+  String kk;
+
+  P(this.name);
 }

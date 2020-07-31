@@ -28,7 +28,7 @@ class CartProvide  with ChangeNotifier {
     tempList.forEach((item){
       // 如果存在，数量进行+1操作
       if(item['goodsId'] == goodsId){
-        tempList[ival]['count'] = item[count]+1;
+        tempList[ival]['count'] = item['count']+1;
         isHave = true;
       }
       ival++;
@@ -46,7 +46,7 @@ class CartProvide  with ChangeNotifier {
     }
 
     // 把字符串进行 encode 操作
-    cartString = json.encode(tempList).toLowerCase();
+    cartString = json.encode(tempList).toString();
     print('cartString = $cartString');
     prefs.setString(cartInfo, cartString); // 进行持久化
   }
