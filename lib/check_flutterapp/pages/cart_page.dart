@@ -1,68 +1,43 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutterapp/check_flutterapp/provide/cart.dart';
+import 'package:provider/provider.dart';
 
-class CartPage extends StatefulWidget {
-  @override
-  _CartPageState createState() => _CartPageState();
-}
-
-class _CartPageState extends State<CartPage> {
-  List<String> testList = [];
+class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _show();
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: 200.0,
-            child: ListView.builder(
-                itemCount: testList.length,
-                itemBuilder: (context,index){
-                  return ListTile(
-                    title: Text(testList[index]),
-                  );
-                }),
-          ),
-          RaisedButton(
-            onPressed: (){_add();},
-            child: Text('增加'),
-          ),
-          RaisedButton(
-            onPressed: (){_clear();},
-            child: Text('清空'),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('购物车'),
       ),
-
+      body: FutureBuilder(
+        future: _getCartInfo(context),
+        builder: (context,snapshot){
+         List  cartList =  Provider.of<CartProvide>(context, listen: false).cartList;
+         if(snapshot.hasData){
+           return ListView.builder(
+           itemCount: cartList.length
+           ,itemBuilder: (context,index){
+               return ListTile(
+                 title: Text(cartList[index].goodsName),
+               );
+           });
+         }else{
+           return Text('正在加载...');
+         }
+        },
+      ),
     );
   }
 
-  void _add() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String temp = "技术胖是最胖的!";
-    testList.add(temp);
-    prefs.setStringList('testInfo', testList);
-    _show();
+
+  Future<String> _getCartInfo(BuildContext context) async {
+    await Provider.of<CartProvide>(context, listen: false).getCartInfo();
+    return 'end';
   }
 
-  void _show() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      if (prefs.getStringList('testInfo') != null) {
-        testList = prefs.getStringList('testInfo');
-      }
-    });
-  }
 
-  void _clear() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //prefs.clear(); //全部清空
-    prefs.remove('testInfo'); //删除key键
-    setState((){
-      testList=[];
-    });
-  }
 }
+

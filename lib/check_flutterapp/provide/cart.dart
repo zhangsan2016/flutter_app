@@ -1,11 +1,15 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutterapp/check_flutterapp/entity/cartInfo.dart';
 import 'package:flutterapp/check_flutterapp/entity/category_big_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CartProvide  with ChangeNotifier {
+  // 购物车数据模型
+  List<CartInfoModel> cartList=[];
   // 购物车持久化存储值
   String cartInfo = 'cartInfo';
   String cartString = "[]";
@@ -29,6 +33,7 @@ class CartProvide  with ChangeNotifier {
       // 如果存在，数量进行+1操作
       if(item['goodsId'] == goodsId){
         tempList[ival]['count'] = item['count']+1;
+        cartList[ival].count++;
         isHave = true;
       }
       ival++;
@@ -36,19 +41,23 @@ class CartProvide  with ChangeNotifier {
 
     // 如果没有进行增加
     if(!isHave){
-      tempList.add({
+      Map<String, dynamic> newGoods={
         'goodsId':goodsId,
         'goodsName':goodsName,
         'count':count,
         'price':price,
         'images':images
-      });
+      };
+
+      tempList.add(newGoods);
+      cartList.add(new CartInfoModel.fromJson(newGoods));
     }
 
     // 把字符串进行 encode 操作
     cartString = json.encode(tempList).toString();
     print('cartString = $cartString');
     prefs.setString(cartInfo, cartString); // 进行持久化
+    notifyListeners();
   }
 
 
@@ -57,6 +66,24 @@ class CartProvide  with ChangeNotifier {
     //prefs.clear();//清空键值对
     prefs.remove(cartInfo);
     print('清空完成-----------------');
+    notifyListeners();
+  }
+
+  /**
+   *  获取购物车中的商品
+   */
+  getCartInfo() async{
+    SharedPreferences prefs  = await SharedPreferences.getInstance();
+    cartString =  prefs.getString(cartInfo);
+    if(cartString == null){
+      cartList = [];
+    }else{
+      List<Map> tempList = (json.decode(cartString.toString()) as List).cast();
+      tempList.forEach((item){
+        cartList.add(CartInfoModel.fromJson(item));
+      });
+    }
+    print('>>>>>>>>>>>>>>>>>>>>>>>> ${cartList.length}  >>>>>>>> cartString = ${cartString}');
     notifyListeners();
   }
 
