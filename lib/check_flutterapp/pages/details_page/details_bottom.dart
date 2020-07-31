@@ -2,11 +2,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutterapp/check_flutterapp/provide/cart.dart';
+import 'package:flutterapp/check_flutterapp/provide/details_Info.dart';
+import 'package:provider/provider.dart';
 
 class DetailsBottom  extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var goodsInfo =  Provider.of<DetailsInfoProvide>(context, listen: false).goodsInfo.data.goodInfo;
+    var goodsId = goodsInfo.goodsId;
+    var goodsName =goodsInfo.goodsName;
+    var count =1;
+    var price =goodsInfo.presentPrice;
+    var images= goodsInfo.image1;
+
     return Container(
       width: ScreenUtil().setWidth(750),
       color: Colors.white,
@@ -26,7 +37,9 @@ class DetailsBottom  extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: (){},
+            onTap: (){
+              Provider.of<CartProvide>(context, listen: false).save(goodsId,goodsName,count,price,images);
+            },
             child: Container(
               alignment: Alignment.center,
               width: ScreenUtil().setWidth(320),

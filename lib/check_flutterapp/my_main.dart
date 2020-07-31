@@ -2,6 +2,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/check_flutterapp/pages/Index_page.dart';
+import 'package:flutterapp/check_flutterapp/provide/cart.dart';
 import 'package:flutterapp/check_flutterapp/provide/category_goods_list.dart';
 import 'package:flutterapp/check_flutterapp/provide/child_category.dart';
 import 'package:flutterapp/check_flutterapp/provide/details_Info.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ChildCategory()),
         ChangeNotifierProvider(create: (_) => CategoryGoodsListProvide()),
         ChangeNotifierProvider(create: (_) => DetailsInfoProvide()),
+        ChangeNotifierProvider(create: (_) => CartProvide()),
 
       ],
       child: Consumer<ChildCategory>(
