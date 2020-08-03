@@ -83,7 +83,6 @@ class CartProvide  with ChangeNotifier {
         cartList.add(CartInfoModel.fromJson(item));
       });
     }
-    print('>>>>>>>>>>>>>>>>>>>>>>>> ${cartList.length}  >>>>>>>> cartString = ${cartString}');
     notifyListeners();
   }
 
