@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/check_flutterapp/pages/cart_item.dart';
 import 'package:flutterapp/check_flutterapp/provide/cart.dart';
 import 'package:provider/provider.dart';
+
+import 'cart_bottom.dart';
+import 'cart_item.dart';
 
 class CartPage extends StatelessWidget {
   @override
@@ -14,21 +16,28 @@ class CartPage extends StatelessWidget {
       body: FutureBuilder(
         future: _getCartInfo(context),
         builder: (context, snapshot) {
-          List cartList =
-              Provider.of<CartProvide>(context, listen: false).cartList;
+            List cartList = Provider.of<CartProvide>(context, listen: false).cartList;
           if (snapshot.hasData) {
-            /* return ListView.builder(
-           itemCount: cartList.length
-           ,itemBuilder: (context,index){
-               return ListTile(
-                 title: Text(cartList[index].goodsName),
-               );
-           });*/
-            return ListView.builder(
+            return Stack(
+              children: <Widget>[
+                ListView.builder(
+                    itemCount: cartList.length,
+                    itemBuilder: (context, index) {
+                      return CartItem(cartList[index]);
+                    }),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: CartBottom(),
+                )
+              ],
+            );
+
+            /*     return ListView.builder(
                 itemCount: cartList.length,
                 itemBuilder: (context, index) {
                   return  CartItem(cartList[index]);
-                });
+                });*/
 
           } else {
             return Text('正在加载...');

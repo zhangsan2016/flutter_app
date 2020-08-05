@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutterapp/check_flutterapp/provide/child_category.dart';
 import 'package:provider/provider.dart';
 
-import 'cart_page.dart';
+import 'cart_page/cart_page.dart';
 import 'category_page.dart';
 import 'home_page.dart';
 import 'home_page2.dart';

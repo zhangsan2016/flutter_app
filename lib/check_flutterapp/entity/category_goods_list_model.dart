@@ -2,7 +2,6 @@ class CategoryGoodsListModel {
   String code;
   String message;
   List<CategoryListData> data;
-
   CategoryGoodsListModel({this.code, this.message, this.data});
 
   CategoryGoodsListModel.fromJson(Map<String, dynamic> json) {
