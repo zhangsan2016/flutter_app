@@ -50,7 +50,9 @@ class DetailsBottom  extends StatelessWidget {
           ),
 
           InkWell(
-            onTap: (){},
+            onTap: (){
+              Provider.of<CartProvide>(context, listen: false).remove();
+            },
             child: Container(
               alignment: Alignment.center,
               width: ScreenUtil().setWidth(320),
