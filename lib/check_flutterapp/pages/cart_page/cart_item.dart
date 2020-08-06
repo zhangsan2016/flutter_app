@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutterapp/check_flutterapp/entity/cartInfo.dart';
+import 'package:flutterapp/check_flutterapp/provide/cart.dart';
+import 'package:provider/provider.dart';
 
 import 'cart_count.dart';
 
@@ -24,7 +26,7 @@ class CartItem extends StatelessWidget {
           _cartCheckBt(item),
           _cartImage(item),
           _cartGoodsName(item),
-          _carPrice(item),
+          _carPrice(context,item),
         ],
       ),
     );
@@ -75,7 +77,7 @@ class CartItem extends StatelessWidget {
   /**
    * 商品价格
    */
-  Widget _carPrice(item){
+  Widget _carPrice(context,item){
     return Container(
       width: ScreenUtil().setWidth(150),
       alignment: Alignment.centerRight,
@@ -83,11 +85,16 @@ class CartItem extends StatelessWidget {
         children: <Widget>[
           Text('￥${item.price}'),
           Container(
-            child: Icon(
-              Icons.delete_forever,
-              color: Colors.black26,
-              size: 30,
-            ),
+            child: InkWell(
+              onTap: (){
+                Provider.of<CartProvide>(context, listen: false).deleteOneGoods(item.goodsId);
+              },
+              child: Icon(
+                Icons.delete_forever,
+                color: Colors.black26,
+                size: 30,
+              ),
+            )
           ),
         ],
       ),
