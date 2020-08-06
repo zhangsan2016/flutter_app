@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutterapp/check_flutterapp/provide/cart.dart';
+import 'package:provider/provider.dart';
 
 class CartBottom extends StatelessWidget {
   @override
@@ -11,9 +13,9 @@ class CartBottom extends StatelessWidget {
       width: ScreenUtil().setWidth(750),
       child: Row(
         children: <Widget>[
-          _selectAllBtn(),
-          _allPriceArea(),
-          _goButton(),
+          _selectAllBtn(context),
+          _allPriceArea(context),
+          _goButton(context),
         ],
       ),
     );
@@ -22,7 +24,7 @@ class CartBottom extends StatelessWidget {
   /**
    * 全选按钮
    */
-  Widget _selectAllBtn() {
+  Widget _selectAllBtn(BuildContext context) {
     return Container(
         child: Row(
       children: <Widget>[
@@ -36,7 +38,8 @@ class CartBottom extends StatelessWidget {
     ));
   }
 
-  Widget _allPriceArea() {
+  Widget _allPriceArea(BuildContext context) {
+    double allPrice  = Provider.of<CartProvide>(context, listen: false).allPrice;
     return Container(
       width: ScreenUtil().setWidth(410),
       alignment: Alignment.centerRight,
@@ -57,7 +60,7 @@ class CartBottom extends StatelessWidget {
                 width: ScreenUtil().setWidth(150),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '￥1992.0',
+                  '￥${allPrice.toStringAsFixed(2)}',
                   style: TextStyle(
                       color: Colors.red, fontSize: ScreenUtil().setSp(36)),
                 ),
@@ -78,7 +81,8 @@ class CartBottom extends StatelessWidget {
     );
   }
 
-  Widget _goButton() {
+  Widget _goButton(BuildContext context) {
+    int allGoodsCount = Provider.of<CartProvide>(context, listen: false).allGoodsCount;
     return Container(
       width: ScreenUtil().setWidth(180),
       child: InkWell(
@@ -87,7 +91,7 @@ class CartBottom extends StatelessWidget {
           margin: EdgeInsets.all(10),
           padding: EdgeInsets.all(10.0),
           child: Text(
-            '结算(6)',
+            '结算($allGoodsCount)',
             style: TextStyle(color: Colors.white),
           ),
           decoration: BoxDecoration(

@@ -199,6 +199,10 @@ void main() {
   P  bb = new P('5566');
 
   print('${aa.name == bb.name}');
+
+
+  double aaaa = 55.4464564;
+  print('${aaaa.toStringAsFixed(2)}');
 }
 
 class P{

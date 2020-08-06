@@ -13,6 +13,10 @@ class CartProvide  with ChangeNotifier {
   // 购物车持久化存储值
   String cartInfo = 'cartInfo';
   String cartString = "[]";
+  //总价格
+  double allPrice =0 ;
+  //商品总数量
+  int allGoodsCount =0;
 
   save(goodsId,goodsName, count,price,images)async{
 
@@ -76,12 +80,21 @@ class CartProvide  with ChangeNotifier {
   getCartInfo() async{
     SharedPreferences prefs  = await SharedPreferences.getInstance();
     cartString =  prefs.getString(cartInfo);
+
+     allPrice =0 ;   //总价格
+     allGoodsCount =0;  //商品总数量
+
     if(cartString == null){
       cartList = [];
     }else{
       cartList = [];
       List<Map> tempList = (json.decode(cartString.toString()) as List).cast();
       tempList.forEach((item){
+
+        if(item['isCheck']){
+          allPrice = (item['price'] * item['count']);
+          allGoodsCount  += item['count'];
+        }
         cartList.add(CartInfoModel.fromJson(item));
       });
     }
