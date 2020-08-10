@@ -127,7 +127,53 @@ class CartProvide  with ChangeNotifier {
   }
 
 
+  /**
+   * 更改单个商品选中状态
+   */
+  changeCheckState(CartInfoModel cartItem) async{
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    cartString = prefs.getString(cartInfo); // 得到持久化的字符串
+    List<Map> tempList = (json.decode(cartString.toString()) as List).cast(); // 声明临时List，用于循环找到修改项的索引。
+    int tempIndex = 0;  // 循环使用索引
+    int changeIndex =0; // 需要修改的索引
+    tempList.forEach((item){
+
+      if(item['goodsId'] == cartItem.goodsId){
+        changeIndex = tempIndex;
+      }
+      tempIndex++;
+    });
+    tempList[changeIndex] = cartItem.toJson(); // 把对象变成 Map 值
+    cartString = json.encode(tempList).toString(); // 编程字符串
+    prefs.setString(cartInfo, cartString); // 进行持久化
+    await getCartInfo(); // 重新读取列表
+
+  }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
