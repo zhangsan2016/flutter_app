@@ -172,12 +172,12 @@ class CartProvide with ChangeNotifier {
     prefs.setString(cartInfo, cartString);
     await getCartInfo();*/
 
-   SharedPreferences prefs = await SharedPreferences.getInstance();
-   cartString = prefs.get(cartInfo);
-   List<Map> templist = ( json.decode(cartString.toString()) as List).cast();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    cartString = prefs.get(cartInfo);
+    List<Map> templist = (json.decode(cartString.toString()) as List).cast();
 
-   List<Map> newList = []; // 新建一个 List，用于组成新的持久化数据
-    for(var item in templist){
+    List<Map> newList = []; // 新建一个 List，用于组成新的持久化数据
+    for (var item in templist) {
       var newItem = item; // 复制新的变量，因为 Dart 不让循环时修改原值
       newItem['isCheck'] = isCheck; // 改变选中状态
       newList.add(newItem);
@@ -185,43 +185,36 @@ class CartProvide with ChangeNotifier {
     cartString = json.encode(newList).toString(); // 形成字符串
     prefs.setString(cartInfo, cartString); // 进行持久化
     await getCartInfo();
+  }
+
+  addOrReduceAction(var cartItem, String todo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    cartString = prefs.getString(cartInfo);
+    List<Map> tempList = (json.decode(cartString.toString()) as List).cast();
+
+    int tempIndex = 0; // 循环使用索引
+    int changeIndex = 0; // 需要修改的索引
+
+    tempList.forEach((item) {
+      if (item['goodsId'] == cartItem.goodsId) {
+        changeIndex = tempIndex;
+      }
+      tempIndex++;
+    });
+
+    if (todo == 'add') {
+      cartItem.count++;
+    } else {
+      if (cartItem.count > 1) {
+        cartItem.count--;
+      }
+    }
+
+    tempList[changeIndex] = cartItem.toJson();
+    cartString = json.encode(tempList).toString();
+    print('cartString = $cartString');
+    prefs.setString(cartInfo, cartString);
+    await getCartInfo();
 
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

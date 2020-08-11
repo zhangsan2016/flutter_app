@@ -72,7 +72,7 @@ class CartItem extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: Column(children: <Widget>[
         Text(item.goodsName),
-        CartCount(),
+        CartCount(item),
       ],),
     );
   }
