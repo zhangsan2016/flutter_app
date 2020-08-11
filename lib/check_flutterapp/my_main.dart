@@ -1,10 +1,11 @@
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/check_flutterapp/pages/Index_page.dart';
+import 'package:flutterapp/check_flutterapp/pages/Index_page2.dart';
 import 'package:flutterapp/check_flutterapp/provide/cart.dart';
 import 'package:flutterapp/check_flutterapp/provide/category_goods_list.dart';
 import 'package:flutterapp/check_flutterapp/provide/child_category.dart';
+import 'package:flutterapp/check_flutterapp/provide/currentIndex.dart';
 import 'package:flutterapp/check_flutterapp/provide/details_Info.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
@@ -52,8 +53,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CategoryGoodsListProvide()),
         ChangeNotifierProvider(create: (_) => DetailsInfoProvide()),
         ChangeNotifierProvider(create: (_) => CartProvide()),
-
-
+        ChangeNotifierProvider(create: (_) => CurrentIndexProvide()),
       ],
       child: Consumer<ChildCategory>(
         builder: (context, counter, _) {
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
                 theme: ThemeData(
                     primaryColor: Colors.pink
                 ),
-                home: IndexPage(),
+                home: IndexPage2(),
 
               ),
             ),

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutterapp/check_flutterapp/provide/cart.dart';
+import 'package:flutterapp/check_flutterapp/provide/currentIndex.dart';
 import 'package:flutterapp/check_flutterapp/provide/details_Info.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +52,9 @@ class DetailsBottom  extends StatelessWidget {
 
           InkWell(
             onTap: (){
-              Provider.of<CartProvide>(context, listen: false).remove();
+           //   Provider.of<CartProvide>(context, listen: false).remove();
+              Provider.of<CurrentIndexProvide>(context, listen: false).changeIndex(2);
+              Navigator.pop(context);
             },
             child: Container(
               alignment: Alignment.center,

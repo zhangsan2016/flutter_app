@@ -95,6 +95,11 @@ class CartProvide with ChangeNotifier {
       allGoodsCount = 0; //商品总数量
       isAllCheck = true;
 
+      // 如果没有商品，全选状态修改为false
+      if(tempList.length == 0){
+        isAllCheck = false;
+      }
+
       tempList.forEach((item) {
         if (item['isCheck']) {
           allPrice += (item['price'] * item['count']);
