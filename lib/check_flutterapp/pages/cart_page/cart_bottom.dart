@@ -11,14 +11,15 @@ class CartBottom extends StatelessWidget {
       margin: EdgeInsets.all(5.0),
       color: Colors.white,
       width: ScreenUtil().setWidth(750),
-      child: Row(
-        children: <Widget>[
-          _selectAllBtn(context),
-          _allPriceArea(context),
-          _goButton(context),
-        ],
-      ),
-    );
+      child: Consumer<CartProvide>(builder: (context, counter, _) {
+        return Row(
+          children: <Widget>[
+            _selectAllBtn(context),
+            _allPriceArea(context),
+            _goButton(context),
+          ],
+        );
+      }),);
   }
 
   /**
@@ -27,19 +28,23 @@ class CartBottom extends StatelessWidget {
   Widget _selectAllBtn(BuildContext context) {
     return Container(
         child: Row(
-      children: <Widget>[
-        Checkbox(
-          value: true,
-          activeColor: Colors.pink,
-          onChanged: (bool val) {},
-        ),
-        Text('全选'),
-      ],
-    ));
+          children: <Widget>[
+            Checkbox(
+              value: Provider.of<CartProvide>(context, listen: false).isAllCheck,
+              activeColor: Colors.pink,
+              onChanged: (bool val) {
+                Provider.of<CartProvide>(context, listen: false).changeAllCheckBtnState(val);
+              },
+            ),
+            Text('全选'),
+          ],
+        ));
   }
 
   Widget _allPriceArea(BuildContext context) {
-    double allPrice  = Provider.of<CartProvide>(context, listen: false).allPrice;
+    double allPrice = Provider
+        .of<CartProvide>(context, listen: false)
+        .allPrice;
     return Container(
       width: ScreenUtil().setWidth(410),
       alignment: Alignment.centerRight,
@@ -82,7 +87,9 @@ class CartBottom extends StatelessWidget {
   }
 
   Widget _goButton(BuildContext context) {
-    int allGoodsCount = Provider.of<CartProvide>(context, listen: false).allGoodsCount;
+    int allGoodsCount = Provider
+        .of<CartProvide>(context, listen: false)
+        .allGoodsCount;
     return Container(
       width: ScreenUtil().setWidth(180),
       child: InkWell(
