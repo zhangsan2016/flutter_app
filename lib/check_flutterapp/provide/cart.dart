@@ -212,7 +212,6 @@ class CartProvide with ChangeNotifier {
 
     tempList[changeIndex] = cartItem.toJson();
     cartString = json.encode(tempList).toString();
-    print('cartString = $cartString');
     prefs.setString(cartInfo, cartString);
     await getCartInfo();
 
