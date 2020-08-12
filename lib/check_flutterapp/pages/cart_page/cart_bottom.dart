@@ -19,7 +19,8 @@ class CartBottom extends StatelessWidget {
             _goButton(context),
           ],
         );
-      }),);
+      }),
+    );
   }
 
   /**
@@ -28,17 +29,18 @@ class CartBottom extends StatelessWidget {
   Widget _selectAllBtn(BuildContext context) {
     return Container(
         child: Row(
-          children: <Widget>[
-            Checkbox(
-              value: Provider.of<CartProvide>(context, listen: false).isAllCheck,
-              activeColor: Colors.pink,
-              onChanged: (bool val) {
-                Provider.of<CartProvide>(context, listen: false).changeAllCheckBtnState(val);
-              },
-            ),
-            Text('全选'),
-          ],
-        ));
+      children: <Widget>[
+        Checkbox(
+          value: Provider.of<CartProvide>(context, listen: false).isAllCheck,
+          activeColor: Colors.pink,
+          onChanged: (bool val) {
+            Provider.of<CartProvide>(context, listen: false)
+                .changeAllCheckBtnState(val);
+          },
+        ),
+        Text('全选'),
+      ],
+    ));
   }
 
   Widget _allPriceArea(BuildContext context) {
@@ -85,7 +87,8 @@ class CartBottom extends StatelessWidget {
   }
 
   Widget _goButton(BuildContext context) {
-    int allGoodsCount = Provider.of<CartProvide>(context, listen: false).allGoodsCount;
+    int allGoodsCount =
+        Provider.of<CartProvide>(context, listen: false).allGoodsCount;
     return Container(
       width: ScreenUtil().setWidth(180),
       child: InkWell(
@@ -124,4 +127,7 @@ class CartBottom extends StatelessWidget {
       ),
     );
   }
+
+
+
 }
