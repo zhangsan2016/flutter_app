@@ -17,10 +17,8 @@ class CartProvide with ChangeNotifier {
 
   //总价格
   double allPrice = 0;
-
   //商品总数量
   int allGoodsCount = 0;
-
   // 是否全选
   bool isAllCheck = false;
 
@@ -38,12 +36,20 @@ class CartProvide with ChangeNotifier {
     // 声明变量，用于判断购物车中是否已经存在此商品 ID
     var isHave = false; // 默认没有
     int ival = 0; // 用于进行循环，找出是否已经存在商品
+
+    //把商品总数量设置为0
+    allPrice=0;
+    allGoodsCount=0;
     tempList.forEach((item) {
       // 如果存在，数量进行+1操作
       if (item['goodsId'] == goodsId) {
         tempList[ival]['count'] = item['count'] + 1;
         cartList[ival].count++;
         isHave = true;
+      }
+      if(item['isCheck']){
+        allPrice+= (cartList[ival].price* cartList[ival].count);
+        allGoodsCount+= cartList[ival].count;
       }
       ival++;
     });

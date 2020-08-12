@@ -42,9 +42,7 @@ class CartBottom extends StatelessWidget {
   }
 
   Widget _allPriceArea(BuildContext context) {
-    double allPrice = Provider
-        .of<CartProvide>(context, listen: false)
-        .allPrice;
+    double allPrice = Provider.of<CartProvide>(context, listen: false).allPrice;
     return Container(
       width: ScreenUtil().setWidth(410),
       alignment: Alignment.centerRight,
@@ -87,9 +85,7 @@ class CartBottom extends StatelessWidget {
   }
 
   Widget _goButton(BuildContext context) {
-    int allGoodsCount = Provider
-        .of<CartProvide>(context, listen: false)
-        .allGoodsCount;
+    int allGoodsCount = Provider.of<CartProvide>(context, listen: false).allGoodsCount;
     return Container(
       width: ScreenUtil().setWidth(180),
       child: InkWell(
