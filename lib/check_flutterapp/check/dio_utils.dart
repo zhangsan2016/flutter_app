@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' ;
 import 'package:flutterapp/check_flutterapp/entity/details_model.dart';
 
 /*
@@ -175,7 +175,7 @@ class DioUtils {
 }
 
 void main() {
-  List<Map> tempList = [];
+/*  List<Map> tempList = [];
   tempList.add({
     'goodsId':'goodsId',
     'goodsName':'goodsName',
@@ -202,7 +202,10 @@ void main() {
 
 
   double aaaa = 55.4464564;
-  print('${aaaa.toStringAsFixed(2)}');
+  print('${aaaa.toStringAsFixed(2)}');*/
+
+  var myvlue= '33';
+  print('myvlue = ${myvlue.runtimeType} is = ${myvlue is String}');
 }
 
 class P{
